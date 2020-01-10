@@ -9,9 +9,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Joystick; 
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Vision;
+import frc.robot.commands.RobotDrive;
+import frc.robot.commands.TurnToTarget;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,18 +28,32 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  //private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  /* Subsystems */
+  public final static DriveTrain driveTrain = new DriveTrain();
+  public final static Gyro gyro = new Gyro();
+  public final static Vision vision = new Vision();
 
+  /* Commands */
+  public final static RobotDrive robotDrive = new RobotDrive();
+  public final static TurnToTarget turnToTarget = new TurnToTarget();
 
+  /* OI */
+  public static Joystick rightStick = new Joystick(0);
+  public static Joystick leftStick = new Joystick(1);
+  public Button rightTrigger = new JoystickButton(rightStick, 1);
+  public Button rightBack = new JoystickButton(rightStick, 2); //back top button
+  public Button rightTopLeft = new JoystickButton(rightStick, 3); //top right button
+  public Button driveTrainOverride = new JoystickButton(rightStick, 5);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
     configureButtonBindings();
+    driveTrain.setDefaultCommand(robotDrive);
   }
 
   /**
@@ -42,6 +63,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    rightTrigger.whenPressed(turnToTarget);
   }
 
 
@@ -50,8 +72,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
-  }
+  
+   //public Command getAutonomousCommand() {
+  //}
 }

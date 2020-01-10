@@ -9,12 +9,22 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.kauailabs.navx.frc.AHRS;
+
 public class Gyro extends SubsystemBase {
   /**
    * Creates a new Gyro.
    */
   public Gyro() {
 
+  }
+
+  /* NavX object */
+  public static AHRS navX = new AHRS();
+
+  //returns rotational angle of the robot in degrees
+  public static double navXRotAngle(){
+    return navX.getYaw();
   }
 
   @Override

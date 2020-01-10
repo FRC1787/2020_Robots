@@ -7,45 +7,45 @@
 
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
+import frc.robot.Constants;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.RobotContainer;
-
-public class RobotDrive extends CommandBase {
+public class TurnToTarget extends CommandBase {
   /**
-   * Creates a new RobotDrive.
+   * Creates a new TurnToTarget.
    */
-  public RobotDrive() {
+  public TurnToTarget() {
     addRequirements(RobotContainer.driveTrain);
+    addRequirements(RobotContainer.vision);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.driveTrain.left1E.setPosition(0); //Resets all the neo encoders to 0
-    RobotContainer.driveTrain.left2E.setPosition(0);
-    RobotContainer.driveTrain.right2E.setPosition(0);
-    RobotContainer.driveTrain.right2E.setPosition(0);
+    RobotContainer.gyro.navX.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.driveTrain.moveLeftSide(RobotContainer.rightStick.getY() + RobotContainer.rightStick.getX()); // reads Joystick values and converts them to drive values for each half of the robot
-    RobotContainer.driveTrain.moveRightSide(RobotContainer.rightStick.getY() - RobotContainer.rightStick.getX());
-
+    RobotContainer.gyro.navX.reset();
+    RobotContainer.driveTrain.seekDrive(RobotContainer.vision.lX, "navX", "exact");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.driveTrain.moveLeftSide(0);
-    RobotContainer.driveTrain.moveRightSide(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (RobotContainer.rightStick.getRawButton(Constants.DRIVETRAIN_OVERRIDE_BUTTON))
+    return true;
+
+    else
     return false;
   }
 }

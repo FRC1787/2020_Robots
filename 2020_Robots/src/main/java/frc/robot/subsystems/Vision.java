@@ -8,17 +8,37 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Vision extends SubsystemBase {
-  /**
-   * Creates a new Vision.
-   */
+  
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+  public static double lX;
+  public static double lY;
+  public static double lArea;
+
   public Vision() {
 
   }
 
+  public static double distanceOutput(double hullArea)
+  {
+    if (lArea < hullArea)
+    return hullArea*30;
+    
+    else
+    return hullArea;
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    NetworkTableEntry tx = table.getEntry("tx"); this.lX = tx.getDouble(0.0);
+    NetworkTableEntry ty = table.getEntry("ty"); this.lY = ty.getDouble(0.0);
+    NetworkTableEntry ta = table.getEntry("ta"); this.lArea = ta.getDouble(0.0);
   }
 }

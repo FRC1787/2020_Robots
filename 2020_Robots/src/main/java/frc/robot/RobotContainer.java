@@ -19,6 +19,8 @@ import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.RobotDrive;
 import frc.robot.commands.TurnToTarget;
+import frc.robot.commands.Chase;
+import frc.robot.commands.Follow;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -37,7 +39,7 @@ public class RobotContainer {
   public final static Vision vision = new Vision();
 
   /* Commands */
-  public final static RobotDrive robotDrive = new RobotDrive();
+  public final static RobotDrive robotDrive = new RobotDrive(driveTrain);
   public final static TurnToTarget turnToTarget = new TurnToTarget();
 
   /* OI */
@@ -63,7 +65,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    rightTrigger.whenPressed(turnToTarget);
+    rightTrigger.whenPressed(new TurnToTarget());
+    rightBack.whenPressed(new Chase(driveTrain, vision));
+    rightTopLeft.whenPressed(new Follow(driveTrain, vision));
   }
 
 

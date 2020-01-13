@@ -79,44 +79,49 @@ public class DriveTrain extends SubsystemBase {
 
   // drives both sides of the robot based on values from a feedback sensor and a
   // target position
-  public static void seekDrive(final double destination, final String feedBackSensor, final String seekType) {
-    if (feedBackSensor == "navX") {
+  public static void seekDrive(double destination, String feedBackSensor, String seekType) {
+    if (feedBackSensor.equals("navX") && !seekType.equals("follow")){
       tankDrive(pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType),
           pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType));
     }
 
-    else if (feedBackSensor == "encoder") {
+    else if (feedBackSensor.equals("encoder")) { 
       tankDrive(-pIDDrive(destination, leftEncoder(), feedBackSensor, seekType),
           pIDDrive(destination, rightEncoder(), feedBackSensor, seekType));
     }
 
-    else if (feedBackSensor == "limeLight") {
+    else if (feedBackSensor.equals("limeLight") && !seekType.equals("follow")) {
       tankDrive(-pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType),
           pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType));
     }
 
-    else if (feedBackSensor == "limeLight" && seekType == "chase") {
+    else if (feedBackSensor.equals("limeLight") && seekType.equals("chase")) {
       tankDrive(-pIDDrive(destination, Vision.lArea, feedBackSensor, seekType),
           pIDDrive(destination, Vision.lArea, feedBackSensor, seekType));
+    }
+
+    else if (seekType.equals("follow")) {
+      tankDrive(-pIDDrive(destination, Vision.lArea, feedBackSensor, seekType) + pIDDrive(Vision.lX, Gyro.navXRotAngle(), "navX", seekType),
+      pIDDrive(destination, Vision.lArea, feedBackSensor, seekType) + pIDDrive(Vision.lX, Gyro.navXRotAngle(), "navX", seekType));
     }
   }
 
   // Outputs a drive value based on sensor inputs and a target value
-  public static double pIDDrive(final double targetDistance, final double actualValue, final String feedBackSensor,
+  public static double pIDDrive(double targetDistance, double actualValue, String feedBackSensor,
       final String seekType) // enter target distance in feet
   {
-    if (feedBackSensor == "navX") {
-      Constants.proportionalTweak = 0.0066; // 0.0065 0.0047
-      Constants.integralTweak = 0.00015; // .000007
-      Constants.DerivativeTweak = 0.000025;
+    if (feedBackSensor.equals("navX")) {
+      Constants.proportionalTweak = 0.0067; // 0.0065 0.0047
+      Constants.integralTweak = 0.0000; // .000007
+      Constants.DerivativeTweak = 0.0000;
       Constants.okErrorRange = 0.0;
     }
 
-    else if (feedBackSensor == "encoder" || feedBackSensor == "limeLight") {
+    else if (feedBackSensor.equals("encoder") || feedBackSensor.equals("limeLight")) {
       Constants.proportionalTweak = 0.0065; // placeholers until ideal values for linear drive are found
       Constants.integralTweak = 0.0;
       Constants.DerivativeTweak = 0.0;
-      Constants.okErrorRange = 0.0;
+      Constants.okErrorRange = 15;
     }
 
     else {
@@ -126,11 +131,11 @@ public class DriveTrain extends SubsystemBase {
       Constants.okErrorRange = 0;
     }
 
-    if (seekType == "exact") {
+    if (seekType.equals("exact") || seekType.equals("follow")) {
       Constants.error = targetDistance - actualValue;
     }
 
-    else if (seekType == "oneWay") {
+    else if (seekType.equals("oneWay")) {
       Constants.error = noNegative(Math.abs(targetDistance - (actualValue)));
     }
 
@@ -147,7 +152,7 @@ public class DriveTrain extends SubsystemBase {
       return Constants.pIDMotorVoltage;
     }
 
-    if ((targetDistance - actualValue < 0) && seekType == "oneWay") {
+    if ((targetDistance - actualValue < 0) && seekType.equals("oneWay")) {
       return 0;
     }
 
@@ -160,15 +165,15 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  private static double truncateMotorOutput(final double motorOutput, final String feedBackSensor) // Whatever the heck Jake and Van did
+  private static double truncateMotorOutput(double motorOutput, String feedBackSensor) // Whatever the heck Jake and Van did
   {
     if (feedBackSensor == "encoder" || feedBackSensor == "limeLight")// sets max motor % to 50 if using encoders or Limelight feedback to drive
     {
-      if (motorOutput > 1)
-        return 0.5;
+      if (motorOutput > .7)
+        return .7;
 
-      else if (motorOutput < -1)
-        return -0.5;
+      else if (motorOutput < -.7)
+        return -.7;
 
       else
         return motorOutput;
@@ -176,11 +181,11 @@ public class DriveTrain extends SubsystemBase {
 
     if (feedBackSensor == "navX")// sets max motor % to 40 if using navx to drive
     {
-      if (motorOutput > .7)
-        return 0.7;
+      if (motorOutput > 1)
+        return 1;
 
-      else if (motorOutput < -.7)
-        return -0.7;
+      else if (motorOutput < -1)
+        return 1;
 
       else
         return motorOutput;

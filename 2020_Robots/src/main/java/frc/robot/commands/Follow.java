@@ -7,36 +7,43 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Vision;
 import frc.robot.RobotContainer;
 import frc.robot.Constants;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
-public class TurnToTarget extends CommandBase {
+public class Follow extends CommandBase {
   /**
-   * Creates a new TurnToTarget.
+   * Creates a new Follow.
    */
-  public TurnToTarget() {
-    addRequirements(RobotContainer.driveTrain);
-    addRequirements(RobotContainer.vision);
+  public Follow(DriveTrain subsystem, Vision subsystemTwo) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
+    addRequirements(subsystemTwo);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.gyro.navX.reset();
+    RobotContainer.driveTrain.left1E.setPosition(0); //Resets all the neo encoders to 0
+    RobotContainer.driveTrain.left2E.setPosition(0);
+    RobotContainer.driveTrain.right2E.setPosition(0);
+    RobotContainer.driveTrain.right2E.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.driveTrain.seekDrive(RobotContainer.vision.distanceOutput(3), "limeLight", "follow");
     RobotContainer.gyro.navX.reset();
-    RobotContainer.driveTrain.seekDrive(RobotContainer.vision.lX, "navX", "exact");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.driveTrain.moveRightSide(0);
+    RobotContainer.driveTrain.moveLeftSide(0);
   }
 
   // Returns true when the command should end.

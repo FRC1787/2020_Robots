@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.DriveTrain;
 
 import frc.robot.RobotContainer;
 
@@ -15,8 +17,8 @@ public class RobotDrive extends CommandBase {
   /**
    * Creates a new RobotDrive.
    */
-  public RobotDrive() {
-    addRequirements(RobotContainer.driveTrain);
+  public RobotDrive(DriveTrain subsystem) {
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +35,7 @@ public class RobotDrive extends CommandBase {
   public void execute() {
     RobotContainer.driveTrain.moveLeftSide(RobotContainer.rightStick.getY() + RobotContainer.rightStick.getX()); // reads Joystick values and converts them to drive values for each half of the robot
     RobotContainer.driveTrain.moveRightSide(RobotContainer.rightStick.getY() - RobotContainer.rightStick.getX());
-
+    RobotContainer.gyro.navX.reset();
   }
 
   // Called once the command ends or is interrupted.

@@ -17,10 +17,17 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Intake;
+
 import frc.robot.commands.RobotDrive;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.commands.Chase;
 import frc.robot.commands.Follow;
+import frc.robot.commands.ClimbUp;
+import frc.robot.commands.IntakeBawls;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -37,10 +44,14 @@ public class RobotContainer {
   public final static DriveTrain driveTrain = new DriveTrain();
   public final static Gyro gyro = new Gyro();
   public final static Vision vision = new Vision();
+  public final static Shooter shooter = new Shooter();
+  public final static Climb climb = new Climb();
+  public final static Intake intake = new Intake();
 
   /* Commands */
   public final static RobotDrive robotDrive = new RobotDrive(driveTrain);
   public final static TurnToTarget turnToTarget = new TurnToTarget();
+  //public final static Shoot shoot = new Shoot(shooter);
 
   /* OI */
   public static Joystick rightStick = new Joystick(0);
@@ -49,6 +60,7 @@ public class RobotContainer {
   public Button rightBack = new JoystickButton(rightStick, 2); //back top button
   public Button rightTopLeft = new JoystickButton(rightStick, 3); //top right button
   public Button driveTrainOverride = new JoystickButton(rightStick, 5);
+  public Button leftTrigger = new JoystickButton(leftStick, 1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -65,9 +77,13 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    rightTrigger.whenPressed(new TurnToTarget());
-    rightBack.whenPressed(new Chase(driveTrain, vision));
+    //rightTrigger.whenPressed(new TurnToTarget());
+    //rightBack.whenPressed(new Chase(driveTrain, vision));
+    //rightTrigger.whenPressed(new )
     rightTopLeft.whenPressed(new Follow(driveTrain, vision));
+    rightBack.whenPressed(new Shoot(shooter));
+    leftTrigger.whenPressed(new ClimbUp(climb));
+    rightTrigger.whileHeld(new IntakeBawls(intake));
   }
 
 

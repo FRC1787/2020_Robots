@@ -29,7 +29,7 @@ public class Vision extends SubsystemBase {
   public static double distanceOutput(double hullArea)
   {
     if (lArea < hullArea)
-    return hullArea*30;
+    return hullArea*10;
     
     else
     return hullArea;

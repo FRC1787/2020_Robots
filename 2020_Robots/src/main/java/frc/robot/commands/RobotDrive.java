@@ -35,7 +35,6 @@ public class RobotDrive extends CommandBase {
   public void execute() {
     RobotContainer.driveTrain.moveLeftSide(RobotContainer.rightStick.getY() + RobotContainer.rightStick.getX()); // reads Joystick values and converts them to drive values for each half of the robot
     RobotContainer.driveTrain.moveRightSide(RobotContainer.rightStick.getY() - RobotContainer.rightStick.getX());
-    RobotContainer.gyro.navX.reset();
   }
 
   // Called once the command ends or is interrupted.

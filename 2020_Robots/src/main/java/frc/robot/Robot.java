@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Intake;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -135,5 +136,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Y Offset", Vision.lY);
     SmartDashboard.putNumber("Hull Area", Vision.lArea);
     SmartDashboard.putNumber("Rotation", Gyro.navXRotAngle());
+    SmartDashboard.putNumber("CSensor Distance", Intake.proximity);
   }
 }

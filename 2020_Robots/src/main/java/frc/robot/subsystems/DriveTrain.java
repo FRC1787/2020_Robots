@@ -37,6 +37,9 @@ public class DriveTrain extends SubsystemBase {
     right1.setIdleMode(IdleMode.kBrake);
     left2.setIdleMode(IdleMode.kBrake);
     right2.setIdleMode(IdleMode.kBrake);
+
+    right1.setInverted(true);
+    right2.setInverted(true);
   }
 
   public void moveLeftSide(final double speed) {
@@ -45,8 +48,8 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void moveRightSide(final double speed) {
-    right1.set(-speed);
-    right2.set(-speed);
+    right1.set(speed);
+    right2.set(speed);
   }
 
   // average encoder value on the left side of the robot
@@ -86,23 +89,23 @@ public class DriveTrain extends SubsystemBase {
     }
 
     else if (feedBackSensor.equals("encoder")) { 
-      tankDrive(-pIDDrive(destination, leftEncoder(), feedBackSensor, seekType),
+      tankDrive(pIDDrive(destination, leftEncoder(), feedBackSensor, seekType),
           pIDDrive(destination, rightEncoder(), feedBackSensor, seekType));
     }
 
     else if (feedBackSensor.equals("limeLight") && !seekType.equals("follow")) {
-      tankDrive(-pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType),
+      tankDrive(pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType),
           pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType));
     }
 
     else if (feedBackSensor.equals("limeLight") && seekType.equals("chase")) {
-      tankDrive(-pIDDrive(destination, Vision.lArea, feedBackSensor, seekType),
+      tankDrive(pIDDrive(destination, Vision.lArea, feedBackSensor, seekType),
           pIDDrive(destination, Vision.lArea, feedBackSensor, seekType));
     }
 
     else if (seekType.equals("follow")) {
       tankDrive(-pIDDrive(destination, Vision.lArea, feedBackSensor, seekType) + pIDDrive(Vision.lX, Gyro.navXRotAngle(), "navX", seekType),
-      pIDDrive(destination, Vision.lArea, feedBackSensor, seekType) + pIDDrive(Vision.lX, Gyro.navXRotAngle(), "navX", seekType));
+      -pIDDrive(destination, Vision.lArea, feedBackSensor, seekType) - pIDDrive(Vision.lX, Gyro.navXRotAngle(), "navX", seekType));
     }
   }
 
@@ -113,14 +116,14 @@ public class DriveTrain extends SubsystemBase {
     if (feedBackSensor.equals("navX")) {
       Constants.proportionalTweak = 0.0067; // 0.0065 0.0047
       Constants.integralTweak = 0.0000; // .000007
-      Constants.DerivativeTweak = 0.0000;
+      Constants.DerivativeTweak = -0.0;
       Constants.okErrorRange = 0.0;
     }
 
     else if (feedBackSensor.equals("encoder") || feedBackSensor.equals("limeLight")) {
-      Constants.proportionalTweak = 0.0065; // placeholers until ideal values for linear drive are found
+      Constants.proportionalTweak = 0.0057; // placeholers until ideal values for linear drive are found
       Constants.integralTweak = 0.0;
-      Constants.DerivativeTweak = 0.0;
+      Constants.DerivativeTweak = -0.0001;
       Constants.okErrorRange = 15;
     }
 
@@ -167,25 +170,25 @@ public class DriveTrain extends SubsystemBase {
 
   private static double truncateMotorOutput(double motorOutput, String feedBackSensor) // Whatever the heck Jake and Van did
   {
-    if (feedBackSensor == "encoder" || feedBackSensor == "limeLight")// sets max motor % to 50 if using encoders or Limelight feedback to drive
+    if (feedBackSensor.equals("encoder") || feedBackSensor.equals("limeLight"))// sets max motor % to 50 if using encoders or Limelight feedback to drive
     {
-      if (motorOutput > .7)
-        return .7;
+      if (motorOutput > .9)
+        return .9;
 
-      else if (motorOutput < -.7)
-        return -.7;
+      else if (motorOutput < -.9)
+        return -.9;
 
       else
         return motorOutput;
     }
 
-    if (feedBackSensor == "navX")// sets max motor % to 40 if using navx to drive
+    if (feedBackSensor.equals("navX"))// sets max motor % to 40 if using navx to drive
     {
       if (motorOutput > 1)
         return 1;
 
       else if (motorOutput < -1)
-        return 1;
+        return -1;
 
       else
         return motorOutput;
@@ -208,10 +211,5 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void setDefaultCommand(Command command) {
-    super.setDefaultCommand(command);
   }
 }

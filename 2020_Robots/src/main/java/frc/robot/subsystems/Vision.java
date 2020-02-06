@@ -35,6 +35,11 @@ public class Vision extends SubsystemBase {
     return hullArea;
   }
 
+  public static double distanceToTarget(){
+    double distance = (Math.tan(lY)/7.5);
+    return distance;
+  }
+
   @Override
   public void periodic() {
     NetworkTableEntry tx = table.getEntry("tx"); this.lX = tx.getDouble(0.0);

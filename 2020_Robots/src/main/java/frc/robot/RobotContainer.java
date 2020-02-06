@@ -61,6 +61,7 @@ public class RobotContainer {
   public Button rightTopLeft = new JoystickButton(rightStick, 3); //top right button
   public Button driveTrainOverride = new JoystickButton(rightStick, 5);
   public Button leftTrigger = new JoystickButton(leftStick, 1);
+  public Button rightRight = new JoystickButton(rightStick, 4);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -81,9 +82,10 @@ public class RobotContainer {
     //rightBack.whenPressed(new Chase(driveTrain, vision));
     //rightTrigger.whenPressed(new )
     rightTopLeft.whenPressed(new Follow(driveTrain, vision));
-    rightBack.whenPressed(new Shoot(shooter));
+    rightBack.whileHeld(new Shoot(shooter));
     leftTrigger.whenPressed(new ClimbUp(climb));
     rightTrigger.whileHeld(new IntakeBawls(intake));
+    rightRight.whileHeld(new Chase(driveTrain, vision));
   }
 
 

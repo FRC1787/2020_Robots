@@ -23,6 +23,7 @@ public class Shoot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Shooter.shootTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,6 +36,8 @@ public class Shoot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.shooter.shoot(0);
+    RobotContainer.shooter.shootTimer.stop();
+    RobotContainer.shooter.shootTimer.reset();
   }
 
   // Returns true when the command should end.

@@ -37,7 +37,7 @@ public class Chase extends CommandBase {
   @Override
   public void execute() {
     RobotContainer.gyro.navX.reset();
-    RobotContainer.driveTrain.seekDrive(RobotContainer.vision.distanceOutput(2), "limeLight", "exact");
+    RobotContainer.driveTrain.seekDrive(10, "limelight", "exact");
   }
 
   // Called once the command ends or is interrupted.

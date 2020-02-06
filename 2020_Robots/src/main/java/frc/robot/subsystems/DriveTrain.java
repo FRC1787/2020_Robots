@@ -40,6 +40,13 @@ public class DriveTrain extends SubsystemBase {
 
     right1.setInverted(true);
     right2.setInverted(true);
+    left1.setInverted(false);
+    left2.setInverted(false);
+
+    left1E.setPosition(0); //Resets all the neo encoders to 0
+    left2E.setPosition(0);
+    right2E.setPosition(0);
+    right2E.setPosition(0);
   }
 
   public void moveLeftSide(final double speed) {
@@ -54,12 +61,20 @@ public class DriveTrain extends SubsystemBase {
 
   // average encoder value on the left side of the robot
   public static double leftEncoder() {
-    return -(left1E.getPosition() + left2E.getPosition()) / 2;
+    return -(left1E.getPosition() + left2E.getPosition()) / 2.0;
   }
 
   // average encoder value on the right side of the robot
   public static double rightEncoder() {
-    return (right1E.getPosition() + right2E.getPosition()) / 2;
+    return (right1E.getPosition() + right2E.getPosition()) / 2.0;
+  }
+
+  public static double rightDistance(){
+    return ((((right1E.getPosition() + right2E.getPosition()) / 2.0) / 8.05) * 4 * Math.PI);
+  }
+
+  public static double leftDistance(){
+    return -((((left1E.getPosition() + left2E.getPosition()) / 2.0) / 8.05) * 4 * Math.PI);
   }
 
   // % output of the right side of the robot
@@ -89,13 +104,13 @@ public class DriveTrain extends SubsystemBase {
     }
 
     else if (feedBackSensor.equals("encoder")) { 
-      tankDrive(pIDDrive(destination, leftEncoder(), feedBackSensor, seekType),
-          pIDDrive(destination, rightEncoder(), feedBackSensor, seekType));
+      tankDrive(pIDDrive(destination, leftEncoder()/48, feedBackSensor, seekType),
+          pIDDrive(destination, rightEncoder()/48, feedBackSensor, seekType));
     }
 
     else if (feedBackSensor.equals("limeLight") && !seekType.equals("follow")) {
-      tankDrive(pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType),
-          pIDDrive(destination, Vision.lArea * 5, feedBackSensor, seekType));
+      tankDrive(pIDDrive(destination, Vision.distanceToTarget(), feedBackSensor, seekType),
+          pIDDrive(destination, Vision.distanceToTarget(), feedBackSensor, seekType));
     }
 
     else if (feedBackSensor.equals("limeLight") && seekType.equals("chase")) {

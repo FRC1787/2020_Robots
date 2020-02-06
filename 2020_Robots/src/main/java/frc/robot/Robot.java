@@ -21,6 +21,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -105,6 +106,7 @@ public class Robot extends TimedRobot {
     /*if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     } */
+    Shooter.shootTimer.reset();
   }
 
   /**
@@ -137,5 +139,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hull Area", Vision.lArea);
     SmartDashboard.putNumber("Rotation", Gyro.navXRotAngle());
     SmartDashboard.putNumber("CSensor Distance", Intake.proximity);
+    SmartDashboard.putNumber("Right Distance", DriveTrain.rightDistance());
+    SmartDashboard.putNumber("Left Distance", DriveTrain.leftDistance());
   }
 }

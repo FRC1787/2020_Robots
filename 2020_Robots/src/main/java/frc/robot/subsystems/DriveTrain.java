@@ -20,25 +20,40 @@ import com.revrobotics.CANEncoder;
 
 public class DriveTrain extends SubsystemBase {
 
+  public static double proportionalTweak;
+	public static double integralTweak;
+	public static double DerivativeTweak;
+	public static double okErrorRange;
+	public static double error;
+	public static double proportional;
+	public static double derivative;
+	public static double integral;
+	public static double previousError;
+	public static double pIDMotorVoltage;
+
   /*Spark Max Motor Controller Objects*/
   private static CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
   private static CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
-  private static CANSparkMax right1 = new CANSparkMax(3, MotorType.kBrushless);
-  private static CANSparkMax right2 = new CANSparkMax(4, MotorType.kBrushless);
+  private static CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
+  private static CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
+  private static CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
+  private static CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
 
   /*Neo Motor Encoder Objects*/
   public static CANEncoder left1E = new CANEncoder(left1);
   public static CANEncoder left2E = new CANEncoder(left2);
+  public static CANEncoder left3E = new CANEncoder(left3);
   public static CANEncoder right1E = new CANEncoder(right1);
   public static CANEncoder right2E = new CANEncoder(right2);
+  public static CANEncoder right3E = new CANEncoder(right3);
 
   public DriveTrain() {
-    left1.setIdleMode(IdleMode.kBrake);
+    left1.setIdleMode(IdleMode.kBrake); //sets drive motors to brake mode
     right1.setIdleMode(IdleMode.kBrake);
     left2.setIdleMode(IdleMode.kBrake);
     right2.setIdleMode(IdleMode.kBrake);
 
-    right1.setInverted(true);
+    right1.setInverted(true); 
     right2.setInverted(true);
     left1.setInverted(false);
     left2.setInverted(false);
@@ -49,32 +64,34 @@ public class DriveTrain extends SubsystemBase {
     right2E.setPosition(0);
   }
 
-  public void moveLeftSide(final double speed) {
+  public static void moveLeftSide(final double speed) {
     left1.set(speed);
     left2.set(speed);
+    left3.set(speed);
   }
 
-  public void moveRightSide(final double speed) {
+  public static void moveRightSide(final double speed) {
     right1.set(speed);
     right2.set(speed);
+    right3.set(speed);
   }
 
   // average encoder value on the left side of the robot
   public static double leftEncoder() {
-    return -(left1E.getPosition() + left2E.getPosition()) / 2.0;
+    return -(left1E.getPosition() + left2E.getPosition() + left3E.getPosition()) / 3.0;
   }
 
   // average encoder value on the right side of the robot
   public static double rightEncoder() {
-    return (right1E.getPosition() + right2E.getPosition()) / 2.0;
+    return (right1E.getPosition() + right2E.getPosition() + right3E.getPosition()) / 2.0;
   }
 
   public static double rightDistance(){
-    return ((((right1E.getPosition() + right2E.getPosition()) / 2.0) / 8.05) * 4 * Math.PI);
+    return ((rightEncoder() / 8.05) * 4 * Math.PI);
   }
 
   public static double leftDistance(){
-    return -((((left1E.getPosition() + left2E.getPosition()) / 2.0) / 8.05) * 4 * Math.PI);
+    return -((leftEncoder() / 8.05) * 4 * Math.PI);
   }
 
   // % output of the right side of the robot
@@ -89,10 +106,8 @@ public class DriveTrain extends SubsystemBase {
 
   // sets % values for each side of the robot individually
   public static void tankDrive(final double leftSide, final double rightSide) {
-    left1.set(leftSide);
-    right1.set(rightSide);
-    left2.set(leftSide);
-    right2.set(rightSide);
+    moveLeftSide(leftSide);
+    moveRightSide(rightSide);
   }
 
   // drives both sides of the robot based on values from a feedback sensor and a
@@ -129,45 +144,45 @@ public class DriveTrain extends SubsystemBase {
       final String seekType) // enter target distance in feet
   {
     if (feedBackSensor.equals("navX")) {
-      Constants.proportionalTweak = 0.0067; // 0.0065 0.0047
-      Constants.integralTweak = 0.0000; // .000007
-      Constants.DerivativeTweak = -0.0;
-      Constants.okErrorRange = 0.0;
+      proportionalTweak = 0.0067; // 0.0065 0.0047
+      integralTweak = 0.0000; // .000007
+      DerivativeTweak = -0.0;
+      okErrorRange = 0.0;
     }
 
     else if (feedBackSensor.equals("encoder") || feedBackSensor.equals("limeLight")) {
-      Constants.proportionalTweak = 0.0057; // placeholers until ideal values for linear drive are found
-      Constants.integralTweak = 0.0;
-      Constants.DerivativeTweak = -0.0001;
-      Constants.okErrorRange = 15;
+      proportionalTweak = 0.0057; // placeholers until ideal values for linear drive are found
+      integralTweak = 0.0;
+      DerivativeTweak = -0.0001;
+      okErrorRange = 15;
     }
 
     else {
-      Constants.proportionalTweak = 0; // these just stay zero
-      Constants.integralTweak = 0;
-      Constants.DerivativeTweak = 0;
-      Constants.okErrorRange = 0;
+      proportionalTweak = 0; // these just stay zero
+      integralTweak = 0;
+      DerivativeTweak = 0;
+      okErrorRange = 0;
     }
 
     if (seekType.equals("exact") || seekType.equals("follow")) {
-      Constants.error = targetDistance - actualValue;
+      error = targetDistance - actualValue;
     }
 
     else if (seekType.equals("oneWay")) {
-      Constants.error = noNegative(Math.abs(targetDistance - (actualValue)));
+      error = noNegative(Math.abs(targetDistance - (actualValue)));
     }
 
-    Constants.proportional = Constants.error; // Math for determining motor output based on PID values
-    Constants.derivative = (Constants.previousError - Constants.error) / 0.02;
-    Constants.integral += Constants.previousError;
-    Constants.previousError = Constants.error;
+    proportional = error; // Math for determining motor output based on PID values
+    derivative = (previousError - error) / 0.02;
+    integral += previousError;
+    previousError = error;
 
-    if ((Constants.error > Constants.okErrorRange || Constants.error < -Constants.okErrorRange)) // && !(targetDistance < actualValue && seekType == "oneWay")
+    if ((error > okErrorRange || error < -okErrorRange)) // && !(targetDistance < actualValue && seekType == "oneWay")
     {
-      Constants.pIDMotorVoltage = truncateMotorOutput((Constants.proportionalTweak * Constants.proportional)
-          + (Constants.DerivativeTweak * Constants.derivative) + (Constants.integralTweak * Constants.integral),
+      pIDMotorVoltage = truncateMotorOutput((proportionalTweak * proportional)
+          + (DerivativeTweak * derivative) + (integralTweak * integral),
           feedBackSensor);
-      return Constants.pIDMotorVoltage;
+      return pIDMotorVoltage;
     }
 
     if ((targetDistance - actualValue < 0) && seekType.equals("oneWay")) {
@@ -175,10 +190,10 @@ public class DriveTrain extends SubsystemBase {
     }
 
     else {
-      Constants.proportional = 0;
-      Constants.integral = 0;
-      Constants.derivative = 0;
-      Constants.previousError = 0;
+      proportional = 0;
+      integral = 0;
+      derivative = 0;
+      previousError = 0;
       return 0;
     }
   }

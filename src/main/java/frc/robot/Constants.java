@@ -47,6 +47,7 @@ public final class Constants {
     public static final double TPR = 4096.0;
     public static final double VTR = (5.0/7.11)/238.0;
     public static final double IPT = (4.0 * Math.PI)/5.45;
+    public static final double MAX_ACCEL = 10.0;
 
     private Constants() {
     }

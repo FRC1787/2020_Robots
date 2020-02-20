@@ -4,7 +4,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.drive.BetterSpark;
+import frc.lib.can.BetterSpark;
 import frc.lib.scheduling.Loop;
 import frc.lib.scheduling.Scheduler;
 import frc.lib.subsystem.CommandSubsystem;

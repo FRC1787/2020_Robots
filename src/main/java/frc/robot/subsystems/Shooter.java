@@ -2,15 +2,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.Utils;
-import frc.lib.drive.BetterSpark;
+import frc.lib.can.BetterSpark;
 import frc.lib.scheduling.Loop;
 import frc.lib.scheduling.Scheduler;
 import frc.lib.subsystem.CommandSubsystem;
 import frc.robot.Constants;
 import lombok.Getter;
 
-public class Shooter extends CommandSubsystem {
+public final class Shooter extends CommandSubsystem {
 
     private static Shooter instance;
 
@@ -25,7 +24,7 @@ public class Shooter extends CommandSubsystem {
     private final BetterSpark A, B;
     @Getter private final IO io;
 
-    public Shooter() {
+    private Shooter() {
         super("Power Cell Shooter");
         this.A = new BetterSpark(Constants.SHOOTERA_CH);
         this.B = new BetterSpark(Constants.SHOOTERB_CH);

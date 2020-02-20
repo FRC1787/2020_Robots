@@ -1,4 +1,4 @@
-package frc.lib.drive;
+package frc.lib.can;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;

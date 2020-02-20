@@ -28,9 +28,6 @@ public class RobotTracker extends Subsystem {
     private Rotation2 lastHeading = Rotation2.IDENTITY;
     private Rotation2 offset = Rotation2.IDENTITY;
 
-    // testing
-    private Twist2 m = Twist2.IDENTITY, p = Twist2.IDENTITY;
-
     public static RobotTracker getInstance() {
         if (instance == null) {
             instance = new RobotTracker();
@@ -41,7 +38,7 @@ public class RobotTracker extends Subsystem {
 
     @Getter private final IO io;
 
-    public RobotTracker() {
+    private RobotTracker() {
         super("Path Tracking");
         this.io = new IO();
 
@@ -89,7 +86,7 @@ public class RobotTracker extends Subsystem {
 
     }
 
-    @Getter private final class IO {
+    @Getter private static final class IO {
 
         private Rotation2 heading = Rotation2.IDENTITY;
         private double calcLeft = 1.0, calcRight = 1.0;

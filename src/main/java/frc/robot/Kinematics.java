@@ -8,6 +8,8 @@ import frc.lib.util.DriveSignal;
 
 public final class Kinematics {
 
+    /* ROBOT KINEMATIC CONSTANTS */
+    private final double ROBOT_MASS_KG = Double.NaN;
 
     private Kinematics() {
     }

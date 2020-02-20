@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.ControlType;
-import frc.lib.drive.BetterSpark;
+import frc.lib.can.BetterSpark;
 import frc.lib.scheduling.Scheduler;
 import frc.lib.subsystem.CommandSubsystem;
 import frc.robot.Constants;
@@ -21,7 +21,7 @@ public class Climber extends CommandSubsystem {
     private final BetterSpark A = new BetterSpark(Constants.CLIMB_A), B = new BetterSpark(Constants.CLIMB_B);
     private final IO io = new IO();
 
-    public Climber() {
+    private Climber() {
         super("Climb");
     }
 
@@ -42,7 +42,6 @@ public class Climber extends CommandSubsystem {
     }
 
     public void setClimb(double speed) {
-        io.output = speed;
         io.output = speed;
     }
 

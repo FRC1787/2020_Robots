@@ -16,12 +16,14 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Compressor;
 
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climb;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,6 +38,7 @@ public class Robot extends TimedRobot {
   protected double internetSpeed = 2.0;
   transient boolean bruhMoment = true;
 
+  private Compressor compressor = new Compressor();
   private RobotContainer robotContainer;
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -46,7 +49,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    
+    compressor.setClosedLoopControl(true);
   }
 
   /**
@@ -107,6 +110,9 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     } */
     Shooter.shootTimer.reset();
+    Climb.lifterBrake(true);
+    Intake.extendIntake();
+    Shooter.hoodControl = false;
   }
 
   /**

@@ -9,37 +9,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
-import frc.robot.RobotContainer;
-
-public class IntakeBawls extends CommandBase {
+public class setHood extends CommandBase {
   /**
-   * Creates a new IntakeBawls.
+   * Creates a new setHood.
    */
-  public IntakeBawls(Intake subsystem) {
+  public setHood() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    //addRequirements(Shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Intake.intakeTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.intakeStage1(.8); //COURT THIS SETS THE SPEED FOR THE INTAKE
-    RobotContainer.intake.intakeStage2(1); // this stays at 100
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.intake.intakeStage1(0);
-    RobotContainer.intake.intakeStage2(0);
   }
 
   // Returns true when the command should end.

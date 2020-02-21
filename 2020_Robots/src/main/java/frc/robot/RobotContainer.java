@@ -26,8 +26,9 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.TurnToTarget;
 import frc.robot.commands.Chase;
 import frc.robot.commands.Follow;
-import frc.robot.commands.ClimbUp;
+import frc.robot.commands.ClimbControl;
 import frc.robot.commands.IntakeBawls;
+import frc.robot.commands.IntakeExtend;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -62,6 +63,8 @@ public class RobotContainer {
   public Button driveTrainOverride = new JoystickButton(rightStick, 5);
   public Button leftTrigger = new JoystickButton(leftStick, 1);
   public Button rightRight = new JoystickButton(rightStick, 4);
+  public Button intakeExtend = new JoystickButton(leftStick, 4);
+  public Button intakeRetract = new JoystickButton(leftStick, 3);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -79,13 +82,13 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //rightTrigger.whenPressed(new TurnToTarget());
-    //rightBack.whenPressed(new Chase(driveTrain, vision));
-    //rightTrigger.whenPressed(new )
-    rightTopLeft.whenPressed(new Follow(driveTrain, vision));
+    //rightTopLeft.whenPressed(new Follow(driveTrain, vision));
     rightBack.whileHeld(new Shoot(shooter));
-    leftTrigger.whenPressed(new ClimbUp(climb));
+    leftTrigger.whenPressed(new ClimbControl(climb));
     rightTrigger.whileHeld(new IntakeBawls(intake));
-    rightRight.whileHeld(new Chase(driveTrain, vision));
+    //rightRight.whileHeld(new Chase(driveTrain, vision));
+    intakeExtend.whenPressed(new IntakeExtend(intake, true));
+    intakeRetract.whenPressed(new IntakeExtend(intake, false));
   }
 
 

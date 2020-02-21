@@ -18,14 +18,4 @@ package frc.robot;
 public final class Constants {
 
 	public static final int DRIVETRAIN_OVERRIDE_BUTTON = 5;
-	public static double proportionalTweak;
-	public static double integralTweak;
-	public static double DerivativeTweak;
-	public static double okErrorRange;
-	public static double error;
-	public static double proportional;
-	public static double derivative;
-	public static double integral;
-	public static double previousError;
-	public static double pIDMotorVoltage;
 }

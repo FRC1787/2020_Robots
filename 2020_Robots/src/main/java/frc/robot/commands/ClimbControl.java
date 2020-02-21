@@ -9,42 +9,56 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.subsystems.Intake;
-
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Climb;
 
-public class IntakeBawls extends CommandBase {
+
+public class ClimbControl extends CommandBase {
   /**
-   * Creates a new IntakeBawls.
+   * Creates a new climbControl.
    */
-  public IntakeBawls(Intake subsystem) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ClimbControl(Climb subsystem) {
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Intake.intakeTimer.start();
+    RobotContainer.climb.climbTimer.reset();
+    RobotContainer.climb.climbTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.intakeStage1(.8); //COURT THIS SETS THE SPEED FOR THE INTAKE
-    RobotContainer.intake.intakeStage2(1); // this stays at 100
+    if (!Climb.liftState){
+      RobotContainer.climb.climbRun(RobotContainer.leftStick.getY());
+    }
+    else {
+      Climb.climbRun(0);
+    }
+    RobotContainer.climb.lifterBrake(Climb.liftState);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.intake.intakeStage1(0);
-    RobotContainer.intake.intakeStage2(0);
+    Climb.climbRun(0);
+    Climb.climbTimer.stop();
+    Climb.climbTimer.reset();
+    
+    /*if (interrupted){
+      Climb.lifterBrake(false);
+    }
+    else if (!interrupted){
+      Climb.lifterBrake(true);
+    }*/
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
+    //return !RobotContainer.leftStick.getRawButton(1);
   }
 }

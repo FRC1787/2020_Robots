@@ -32,12 +32,12 @@ public class DriveTrain extends SubsystemBase {
 	public static double pIDMotorVoltage;
 
   /*Spark Max Motor Controller Objects*/
-  private static CANSparkMax left1 = new CANSparkMax(1, MotorType.kBrushless);
-  private static CANSparkMax left2 = new CANSparkMax(2, MotorType.kBrushless);
-  private static CANSparkMax left3 = new CANSparkMax(3, MotorType.kBrushless);
-  private static CANSparkMax right1 = new CANSparkMax(4, MotorType.kBrushless);
-  private static CANSparkMax right2 = new CANSparkMax(5, MotorType.kBrushless);
-  private static CANSparkMax right3 = new CANSparkMax(6, MotorType.kBrushless);
+  private static CANSparkMax left1 = new CANSparkMax(20, MotorType.kBrushless);
+  private static CANSparkMax left2 = new CANSparkMax(1, MotorType.kBrushless);
+  private static CANSparkMax left3 = new CANSparkMax(2, MotorType.kBrushless);
+  private static CANSparkMax right1 = new CANSparkMax(13, MotorType.kBrushless);
+  private static CANSparkMax right2 = new CANSparkMax(14, MotorType.kBrushless);
+  private static CANSparkMax right3 = new CANSparkMax(15, MotorType.kBrushless);
 
   /*Neo Motor Encoder Objects*/
   public static CANEncoder left1E = new CANEncoder(left1);
@@ -55,13 +55,17 @@ public class DriveTrain extends SubsystemBase {
 
     right1.setInverted(true); 
     right2.setInverted(true);
+    right3.setInverted(true);
     left1.setInverted(false);
     left2.setInverted(false);
+    left3.setInverted(false);
 
     left1E.setPosition(0); //Resets all the neo encoders to 0
     left2E.setPosition(0);
+    left3E.setPosition(0);
     right2E.setPosition(0);
     right2E.setPosition(0);
+    right3E.setPosition(0);
   }
 
   public static void moveLeftSide(final double speed) {
@@ -96,12 +100,12 @@ public class DriveTrain extends SubsystemBase {
 
   // % output of the right side of the robot
   public static double averageRightsideOutput() {
-    return (right1.get() + right2.get()) / 2;
+    return (right1.get() + right2.get() + right3.get()) / 3;
   }
 
   // % output of the left side of the robot
   public static double averageLeftsideOutput() {
-    return (left1.get() + left2.get()) / 2;
+    return (left1.get() + left2.get()+ left3.get()) / 3;
   }
 
   // sets % values for each side of the robot individually

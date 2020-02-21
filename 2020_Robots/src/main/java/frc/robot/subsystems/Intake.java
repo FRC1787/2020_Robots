@@ -7,26 +7,32 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import frc.robot.RobotContainer;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
-
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends SubsystemBase {
 
-  private CANSparkMax intakeDrum = new CANSparkMax(80, MotorType.kBrushless);
-  private CANSparkMax intake = new CANSparkMax(90, MotorType.kBrushless);
+  private CANSparkMax intake1 = new CANSparkMax(5, MotorType.kBrushless);
+  private CANSparkMax intake2 = new CANSparkMax(6, MotorType.kBrushless);
 
   private static I2C.Port i2cPort = I2C.Port.kOnboard;
   public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   public static Timer intakeTimer = new Timer();
   public static Timer ballTimer = new Timer();
+
+  public static final Solenoid intakeExtended = new Solenoid(2);
+  public static final Solenoid intakeRetracted = new Solenoid(3);
 
   //ball counting variables
   //enter pin number u want
@@ -48,10 +54,17 @@ public class Intake extends SubsystemBase {
   public static boolean ballFull;
   public static double intakeTime;
   public static boolean ballStuck;
+  public static boolean extended = true;
 
   public Intake() {
     this(0);
   }
+
+  public static void extendIntake(){
+    intakeExtended.set(Intake.extended);
+    intakeRetracted.set(!Intake.extended);
+  }
+
 
   public Intake(int ballsLoaded){
     Intake.ballCount = ballsLoaded;
@@ -61,7 +74,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeStage1(double setSpeed){
-    intakeDrum.set(setSpeed);
+    intake1.set(setSpeed);
+    //intake2.set(-setSpeed);
   }
 
   public static boolean getBreakerState(){
@@ -72,7 +86,8 @@ public class Intake extends SubsystemBase {
     //check if the balls are full
     if (ballCount >= MAX_BALLS){
       ballFull = true;
-    } else {
+    } 
+    else {
       ballFull = false;
     }
 
@@ -95,12 +110,14 @@ public class Intake extends SubsystemBase {
         //if the breaker is activated
         if (!getBreakerState()){
           Intake.samples[sampleIndex] = 1;
-        } else {
+        }
+        else {
           Intake.samples[sampleIndex] = -1;
         }
 
         Intake.sampleIndex += 1;
-      } else {
+      } 
+      else {
         //iterate through samples and if the average is high enough then add ball
         int sum = 0;
 
@@ -117,27 +134,30 @@ public class Intake extends SubsystemBase {
         Intake.sampleIndex = 0;
         Intake.ballDelayCounter = 0;
       }
-    } else {
+    } 
+    else {
       Intake.ballDelayCounter += 1;
     }
   }
 
   public void intakeStage2(double setSpeed) {
-    if (Intake.ballReady && !Intake.ballFull && !Intake.ballStuck) {
+    intake2.set(-setSpeed);
+    
+    /*if (Intake.ballReady && !Intake.ballFull && !Intake.ballStuck) {
       intakeTimer.reset();
       intakeTimer.start();
       if (Intake.intakeTime < .2) {
-        intake.set(setSpeed);
+        //intake.set(setSpeed);
       }
       else {
-        intake.set(0);
+        //intake.set(0);
       }
     }
     else{
-      intake.set(0);
+      //intake.set(0);
       intakeTimer.stop();
       intakeTimer.reset();
-    }
+    }*/
   }
 
   @Override

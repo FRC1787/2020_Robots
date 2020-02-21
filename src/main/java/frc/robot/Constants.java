@@ -36,6 +36,13 @@ public final class Constants {
     public static final int QUICKTURN_CH = 2; // TODO correct channel
 
     /* ROBOT */
+    public static final double OUTER_TRACK_WIDTH = 30.0; // inches
+    public static final double INNER_TRACK_WIDTH = 26.0; // inches
+    public static final double TRACK_WIDTH = (OUTER_TRACK_WIDTH + INNER_TRACK_WIDTH) / 2; // inches
+    public static final double DRIVE_WHEEL_DIAMETER = 6.0; // inches
+    public static final double DRIVE_WHEEL_CIRCUMFERENCE = Math.PI * DRIVE_WHEEL_DIAMETER;
+
+    @Deprecated
     public static final double WHEEL_DISTANCE = 21.0;
     public static final double encoderPerRotation = (5.35 + 5.38) / 2.0;
     public static final double wheelDiameterA = 4.0;

@@ -44,4 +44,26 @@ public final class Kinematics {
     public static Pose2 integrateForwardKinematics(Pose2 current, Twist2 kinematics) {
         return current.transform(Pose2.exp(kinematics));
     }
+
+    //return theta in radians from distance and other variables for shooter calculations
+    //inputs
+    //d is Distance from the point
+    //a is acceleration
+    //v is the initial velocity
+    //hR is the height of the robot from where we shoot
+    //hT is the height of the goal we need to score at.
+    public static double thetaFromDistance(double d, double a, double v, double hR, double hT){
+        double element1;
+        double element2;
+
+        double a1 = (d*d + hR*hR - 2*hR*hT + hT*hT);
+        double a2 = (-a*hR + a*hT + v*v);
+        double a3 = (-1 * a*a * d*d - 2 * a * hR * v*v + 2 * a * hT * v*v + v*v*v*v);
+        double a4 = Math.sqrt((a2 + Math.sqrt(a3)) / a1);
+
+        element1 = (1/(2 * a1)) * ((a2 + Math.sqrt(a3))*(-2*hR + 2*hT)-a) / (a4 * v);
+        element2 = ((a4 * d) / v);
+
+        return Math.atan2(element1,element2);
+    }
 }

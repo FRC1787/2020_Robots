@@ -29,6 +29,10 @@ public final class PID {
         this.error = error;
     }
 
+    public double getError() {
+        return this.error;
+    }
+
     public double getSetpoint() {
         return kP * error + kI * errorIntegral + kD * dError;
     }

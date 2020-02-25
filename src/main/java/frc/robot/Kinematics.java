@@ -15,7 +15,7 @@ public final class Kinematics {
     }
 
     public static Twist2 forwardKinematics(double dLeft, double dRight) {
-        double dTheta = (dRight - dLeft) / Constants.WHEEL_DISTANCE;
+        double dTheta = (dRight - dLeft) / Constants.TRACK_WIDTH;
         return forwardKinematics(dLeft, dRight, dTheta);
     }
 
@@ -37,7 +37,7 @@ public final class Kinematics {
 
         System.out.println(velocity);
 
-        double deltaV = Constants.WHEEL_DISTANCE * velocity.deltaTheta() / (2 * 10); // TODO Factor
+        double deltaV = Constants.TRACK_WIDTH * velocity.deltaTheta() / (2 * 10); // TODO Factor
         return new DriveSignal(velocity.deltaX() - deltaV, velocity.deltaY() - deltaV);
     }
 

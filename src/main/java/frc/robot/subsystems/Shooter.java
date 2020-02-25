@@ -21,14 +21,15 @@ public final class Shooter extends CommandSubsystem {
         return instance;
     }
 
-    private final BetterSpark A, B;
+    private final BetterSpark A, B, accelerator;
     @Getter private final IO io;
 
     private Shooter() {
         super("Power Cell Shooter");
         this.A = new BetterSpark(Constants.SHOOTER_CH_1);
         this.B = new BetterSpark(Constants.SHOOTER_CH_2);
-        this.A.setInverted(false);
+        this.accelerator = new BetterSpark(Constants.ACCEL_CH);
+        this.A.setInverted(true);
         this.B.setInverted(false);
 
         this.io = new IO();
@@ -43,16 +44,14 @@ public final class Shooter extends CommandSubsystem {
     public void readIO() {
         io.aRate = A.getEncoder().getVelocity();
         io.bRate = B.getEncoder().getVelocity();
-        io.aFeedback = A.getOutputCurrent();
-        io.bFeedback = B.getOutputCurrent();
+        io.aFeedback = A.getAppliedOutput();
+        io.bFeedback = B.getAppliedOutput();
     }
 
     @Override
     public void writeIO() {
-        A.getPIDController().setSmartMotionMaxVelocity(io.maxVelocity, 1);
-        B.getPIDController().setSmartMotionMaxVelocity(io.maxVelocity, 1);
-        A.set(ControlType.kVelocity, io.aOutput * 100);
-        B.set(ControlType.kVelocity, io.bOutput * 100);
+        A.set(ControlType.kDutyCycle, io.aOutput);
+        B.set(ControlType.kDutyCycle, io.bOutput);
     }
 
     public void setShoot(double value) {

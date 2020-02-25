@@ -15,6 +15,13 @@ public class BetterSpark extends CANSparkMax {
         this.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
     }
 
+    public BetterSpark(int device, MotorType type) {
+        super(device, type);
+        this.getEncoder().setVelocityConversionFactor(1.0);
+        this.getEncoder().setPositionConversionFactor(1.0);
+        this.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+    }
+
     public void set(ControlType type, double value) {
         if (value != lastSet || type != lastType) {
             lastSet = value;

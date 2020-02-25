@@ -15,6 +15,7 @@ import frc.robot.commands.drive.TeleopArcadeDrive;
 import frc.robot.commands.drive.TeleopCurvatureDrive;
 import frc.robot.commands.shooter.ManualShoot;
 import frc.robot.commands.shooter.NoShoot;
+import frc.robot.commands.vision.VisionIdle;
 import frc.robot.subsystems.*;
 import frc.lib.subsystem.SubsystemManager;
 import frc.robot.util.LogFormatter;
@@ -42,6 +43,7 @@ public class Robot extends TimedRobot {
   private final Shooter shooter = Shooter.getInstance();
   private final RobotTracker robotTracker = RobotTracker.getInstance();
   private final Climber climber = Climber.getInstance();
+  private final Limelight limelight = Limelight.getInstance();
   public static Logger getLogger() {
     return Robot.logger;
   }
@@ -135,6 +137,7 @@ public class Robot extends TimedRobot {
     // update default commands
     driveTrain.setDefaultCommand(curvatureDrive);
     shooter.setDefaultCommand(new ManualShoot());
+    limelight.setDefaultCommand(new VisionIdle());
 
     // handle schedulers
     disabledScheduler.stop();

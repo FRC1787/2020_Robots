@@ -5,7 +5,7 @@ import frc.lib.subsystem.CommandSubsystem;
 import frc.lib.util.DriveSignal;
 import frc.robot.subsystems.DriveTrain;
 
-public class Stopped extends CommandBase {
+public final class Stopped extends CommandBase {
 
     private final DriveTrain driveTrain = DriveTrain.getInstance();
 

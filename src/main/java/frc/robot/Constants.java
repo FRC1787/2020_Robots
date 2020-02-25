@@ -28,7 +28,6 @@ public final class Constants {
     public static final int SHOOTER_CH_1 = 3;
     public static final int SHOOTER_CH_2 = 12;
     public static final int ACCEL_CH = 10;
-
     public static final int HOOD_CH = 11;
 
 
@@ -46,10 +45,8 @@ public final class Constants {
     public static final double INNER_TRACK_WIDTH = 26.0; // inches
     public static final double TRACK_WIDTH = (OUTER_TRACK_WIDTH + INNER_TRACK_WIDTH) / 2; // inches
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; // inches
-    public static final double DRIVE_WHEEL_CIRCUMFERENCE = Math.PI * DRIVE_WHEEL_DIAMETER;
+    public static final double DRIVE_WHEEL_CIRCUMFERENCE = Math.PI * DRIVE_WHEEL_DIAMETER; // inches
 
-    @Deprecated
-    public static final double WHEEL_DISTANCE = 21.0;
     public static final double encoderPerRotation = (5.35 + 5.38) / 2.0;
     public static final double wheelDiameterA = 4.0;
     public static final double wheelCircumferenceA = wheelDiameterA * Math.PI;
@@ -62,6 +59,9 @@ public final class Constants {
     public static final double IPT = (4.0 * Math.PI)/5.45;
     public static final double MAX_ACCEL = 10.0;
     public static final double RPT = 1 / 8.0;
+
+    public static final double LIMELIGHT_MOUNT_ANGLE = 0; // degrees
+    public static final double LIMELIGHT_HEIGHT = 0; // inches
 
     private Constants() {
     }

@@ -104,6 +104,10 @@ public class RobotTracker extends Subsystem {
         state.reset(Timer.getFPGATimestamp(), Pose2.IDENTITY);
     }
 
+    public double getDT() {
+        return io.dt;
+    }
+
     private final class TrackingLoop implements Loop {
 
         @Override
@@ -126,7 +130,6 @@ public class RobotTracker extends Subsystem {
             final double tL = driveTrain.getIO().getLeftVelocity();
             final Rotation2 theta = io.heading;
 
-//            final double dTheta = (vR - vL) / Constants.WHEEL_DISTANCE;
             final double dTheta = lastHeading.inverse().rotate(theta).getRadians();
 
             io.dt = dt;

@@ -134,7 +134,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // update default commands
     driveTrain.setDefaultCommand(curvatureDrive);
-    shooter.setDefaultCommand(new NoShoot());
+    shooter.setDefaultCommand(new ManualShoot());
 
     // handle schedulers
     disabledScheduler.stop();

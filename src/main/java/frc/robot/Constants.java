@@ -16,15 +16,21 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
     /* MOTOR CONTROLLERS */
-    public static final int FR_CH = 3;
-    public static final int BR_CH = 4;
-    public static final int FL_CH = 1;
-    public static final int BL_CH = 2;
-    public static final int CLIMB_A = 6;
-    public static final int CLIMB_B = 7;
-    public static final int SHOOTERA_CH = 8;
-    public static final int SHOOTERB_CH = 9;
+    public static final int R_CH_1 = 13;
+    public static final int R_CH_2 = 14;
+    public static final int R_CH_3 = 15;
+    public static final int L_CH_1 = 20;
+    public static final int L_CH_2 = 1;
+    public static final int L_CH_3 = 2;
+
+    public static final int SHOOTER_CH_1 = 3;
+    public static final int SHOOTER_CH_2 = 12;
+    public static final int ACCEL_CH = 10;
+
+    public static final int HOOD_CH = 11;
+
 
     public static final int CURRENT_LIMIT = 40;
 
@@ -55,6 +61,7 @@ public final class Constants {
     public static final double VTR = (5.0/7.11)/238.0;
     public static final double IPT = (4.0 * Math.PI)/5.45;
     public static final double MAX_ACCEL = 10.0;
+    public static final double RPT = 1 / 8.0;
 
     private Constants() {
     }

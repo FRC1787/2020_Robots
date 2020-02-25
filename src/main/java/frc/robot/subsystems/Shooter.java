@@ -26,9 +26,9 @@ public final class Shooter extends CommandSubsystem {
 
     private Shooter() {
         super("Power Cell Shooter");
-        this.A = new BetterSpark(Constants.SHOOTERA_CH);
-        this.B = new BetterSpark(Constants.SHOOTERB_CH);
-        this.A.setInverted(true);
+        this.A = new BetterSpark(Constants.SHOOTER_CH_1);
+        this.B = new BetterSpark(Constants.SHOOTER_CH_2);
+        this.A.setInverted(false);
         this.B.setInverted(false);
 
         this.io = new IO();

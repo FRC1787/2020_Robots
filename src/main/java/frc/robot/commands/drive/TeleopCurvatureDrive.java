@@ -89,11 +89,11 @@ public final class TeleopCurvatureDrive extends CommandBase {
     @Override
     public void tick() {
         // get raw inputs
-        final double turn = control.getDriveX();
+        final double turn = -control.getDriveX();
         final double throttle = control.getDriveY();
 
         // set quick turn
-        boolean quickTurn = !control.getRight().getRawButton(Constants.QUICKTURN_CH); // TODO control quickturn
+        boolean quickTurn = control.getRight().getRawButton(Constants.QUICKTURN_CH); // TODO control quickturn
 
         // get drive signal
         final DriveSignal drive = calculateSignal(throttle, turn, quickTurn);

@@ -18,7 +18,7 @@ public class Climber extends CommandSubsystem {
         return instance;
     }
 
-    private final BetterSpark A = new BetterSpark(Constants.CLIMB_A), B = new BetterSpark(Constants.CLIMB_B);
+    private final BetterSpark A = new BetterSpark(20), B = new BetterSpark(21);
     private final IO io = new IO();
 
     private Climber() {

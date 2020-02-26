@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision;
 import frc.robot.RobotContainer;
 
 public class Shoot extends CommandBase {
@@ -24,20 +25,34 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() {
     Shooter.shootTimer.start();
+    Vision.ledSet(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.shooter.shoot(.95); // COURT THIS SETS THE SPEED
+    //RobotContainer.shooter.shoot(1); // COURT THIS SETS THE SPEED
+    Shooter.bootlegShoot(4900);
+    
+    if (Shooter.rampTime > 2){
+      //Shooter.shootTimer.stop();
+      //Shooter.shootTimer.reset();
+      //Shooter.shootTimer2.start();
+    }
+    if(Shooter.shootTime > 1){
+      Shooter.shootTimer2.reset();
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Vision.ledSet(1);
     RobotContainer.shooter.shoot(0);
     RobotContainer.shooter.shootTimer.stop();
     RobotContainer.shooter.shootTimer.reset();
+    RobotContainer.shooter.shootTimer2.stop();
+    RobotContainer.shooter.shootTimer2.reset();
   }
 
   // Returns true when the command should end.

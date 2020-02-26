@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends SubsystemBase {
 
-  private CANSparkMax intake1 = new CANSparkMax(5, MotorType.kBrushless);
-  private CANSparkMax intake2 = new CANSparkMax(6, MotorType.kBrushless);
+  private CANSparkMax intakeInner = new CANSparkMax(5, MotorType.kBrushless);
+  private CANSparkMax intakeFront = new CANSparkMax(6, MotorType.kBrushless);
 
   private static I2C.Port i2cPort = I2C.Port.kOnboard;
   public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
@@ -74,8 +74,8 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeStage1(double setSpeed){
-    intake1.set(setSpeed);
-    //intake2.set(-setSpeed);
+    intakeInner.set(setSpeed);
+    //intakeFront.set(-setSpeed);
   }
 
   public static boolean getBreakerState(){
@@ -141,7 +141,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeStage2(double setSpeed) {
-    intake2.set(-setSpeed);
+    intakeFront.set(-setSpeed);
     
     /*if (Intake.ballReady && !Intake.ballFull && !Intake.ballStuck) {
       intakeTimer.reset();

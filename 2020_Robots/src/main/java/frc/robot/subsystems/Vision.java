@@ -16,11 +16,17 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class Vision extends SubsystemBase {
   
-  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+  public static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+  public static NetworkTableEntry tx; 
+  public static NetworkTableEntry ty; 
+  public static NetworkTableEntry ta; 
+  public static NetworkTableEntry led;
 
   public static double lX;
   public static double lY;
   public static double lArea;
+  public static double ledState;
 
   public Vision() {
 
@@ -40,10 +46,14 @@ public class Vision extends SubsystemBase {
     return distance;
   }
 
+  public static void ledSet(double ledState){
+    Vision.table.getEntry("ledMode").setNumber(ledState);
+  }
+
   @Override
   public void periodic() {
-    NetworkTableEntry tx = table.getEntry("tx"); this.lX = tx.getDouble(0.0);
-    NetworkTableEntry ty = table.getEntry("ty"); this.lY = ty.getDouble(0.0);
-    NetworkTableEntry ta = table.getEntry("ta"); this.lArea = ta.getDouble(0.0);
+   Vision.tx = table.getEntry("tx"); Vision.lX = tx.getDouble(0.0);
+   Vision.ty = table.getEntry("ty"); Vision.lY = ty.getDouble(0.0);
+   Vision.ta = table.getEntry("ta"); Vision.lArea = ta.getDouble(0.0);
   }
 }

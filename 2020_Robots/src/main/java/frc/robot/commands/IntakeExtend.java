@@ -14,10 +14,11 @@ import frc.robot.subsystems.Intake;
 public class IntakeExtend extends CommandBase {
   
   public boolean extendSet;
+
   public IntakeExtend(Intake subsystem, boolean state) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    extendSet = state;
+    this.extendSet = state;
   }
 
   // Called when the command is initially scheduled.

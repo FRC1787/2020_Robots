@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    Vision.ledSet(0);
   }
 
   @Override
@@ -110,9 +111,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     } */
     Shooter.shootTimer.reset();
+    Shooter.shootTimer2.reset();
     Climb.lifterBrake(true);
     Intake.extendIntake();
     Shooter.hoodControl = false;
+    Vision.ledSet(1);
+    //Shooter.hoodE.
   }
 
   /**
@@ -144,8 +148,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Y Offset", Vision.lY);
     SmartDashboard.putNumber("Hull Area", Vision.lArea);
     SmartDashboard.putNumber("Rotation", Gyro.navXRotAngle());
+    SmartDashboard.putNumber("Roll", Gyro.navX.getRoll());
+    SmartDashboard.putNumber("Pitch", Gyro.navX.getPitch());
     SmartDashboard.putNumber("CSensor Distance", Intake.proximity);
     SmartDashboard.putNumber("Right Distance", DriveTrain.rightDistance());
     SmartDashboard.putNumber("Left Distance", DriveTrain.leftDistance());
+    SmartDashboard.putNumber("Shoot1 RPM", Shooter.shootE1.getVelocity());
+    SmartDashboard.putNumber("Shoot2 RPM", Shooter.shootE2.getVelocity());
+    SmartDashboard.putNumber("Hood Position", Shooter.hoodE.getPosition());
   }
 }

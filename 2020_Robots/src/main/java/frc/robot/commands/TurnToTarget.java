@@ -12,6 +12,10 @@ import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.DriveTrain;
+
 public class TurnToTarget extends CommandBase {
   /**
    * Creates a new TurnToTarget.
@@ -25,18 +29,22 @@ public class TurnToTarget extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.gyro.navX.reset();
+    RobotContainer.vision.led.setNumber(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     RobotContainer.gyro.navX.reset();
-    RobotContainer.driveTrain.seekDrive(RobotContainer.vision.lX, "navX", "exact");
+    RobotContainer.driveTrain.seekDrive(Vision.lX, "navX", "exact");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.driveTrain.moveRightSide(0);
+    RobotContainer.driveTrain.moveLeftSide(0);
+    RobotContainer.vision.led.setNumber(1);
   }
 
   // Returns true when the command should end.

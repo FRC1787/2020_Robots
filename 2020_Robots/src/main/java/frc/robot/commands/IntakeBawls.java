@@ -10,16 +10,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
 
 import frc.robot.RobotContainer;
 
 public class IntakeBawls extends CommandBase {
-  /**
-   * Creates a new IntakeBawls.
-   */
-  public IntakeBawls(Intake subsystem) {
+
+  private double frontSetSpeed;
+  private double innerSetSpeed;
+  
+  public IntakeBawls(Intake subsystem, double frontSpeed, double innerSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    this.frontSetSpeed = frontSpeed;
+    this.innerSetSpeed = innerSpeed;
   }
 
   // Called when the command is initially scheduled.
@@ -31,8 +35,8 @@ public class IntakeBawls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.intake.intakeStage1(.8); //COURT THIS SETS THE SPEED FOR THE INTAKE
-    RobotContainer.intake.intakeStage2(1); // this stays at 100
+    RobotContainer.intake.intakeStage1(innerSetSpeed); //COURT THIS SETS THE SPEED FOR THE INTAKE
+    RobotContainer.intake.intakeStage2(frontSetSpeed); // this stays at 100
   }
 
   // Called once the command ends or is interrupted.

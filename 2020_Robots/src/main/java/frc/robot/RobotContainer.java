@@ -29,6 +29,7 @@ import frc.robot.commands.Follow;
 import frc.robot.commands.ClimbControl;
 import frc.robot.commands.IntakeBawls;
 import frc.robot.commands.IntakeExtend;
+import frc.robot.commands.SetHood;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -51,6 +52,7 @@ public class RobotContainer {
 
   /* Commands */
   public final static RobotDrive robotDrive = new RobotDrive(driveTrain);
+  public final static SetHood setHood = new SetHood(shooter);
   public final static TurnToTarget turnToTarget = new TurnToTarget();
   //public final static Shoot shoot = new Shoot(shooter);
 
@@ -58,9 +60,12 @@ public class RobotContainer {
   public static Joystick rightStick = new Joystick(0);
   public static Joystick leftStick = new Joystick(1);
   public Button rightTrigger = new JoystickButton(rightStick, 1);
-  public Button rightBack = new JoystickButton(rightStick, 2); //back top button
+  public Button rightThumb = new JoystickButton(rightStick, 2); //back top button
   public Button rightTopLeft = new JoystickButton(rightStick, 3); //top right button
+  public Button reverseIntake = new JoystickButton(rightStick, 4);
   public Button driveTrainOverride = new JoystickButton(rightStick, 5);
+  public Button targetButton = new JoystickButton(rightStick, 7);
+
   public Button leftTrigger = new JoystickButton(leftStick, 1);
   public Button rightRight = new JoystickButton(rightStick, 4);
   public Button intakeExtend = new JoystickButton(leftStick, 4);
@@ -72,6 +77,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
     driveTrain.setDefaultCommand(robotDrive);
+    shooter.setDefaultCommand(setHood);
   }
 
   /**
@@ -83,9 +89,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //rightTrigger.whenPressed(new TurnToTarget());
     //rightTopLeft.whenPressed(new Follow(driveTrain, vision));
-    rightBack.whileHeld(new Shoot(shooter));
+    rightThumb.whileHeld(new Shoot(shooter));
     leftTrigger.whenPressed(new ClimbControl(climb));
-    rightTrigger.whileHeld(new IntakeBawls(intake));
+    rightTrigger.whileHeld(new IntakeBawls(intake, 1, 1));
+    reverseIntake.whileHeld(new IntakeBawls(intake, -1, -1));
+    targetButton.whenPressed(new TurnToTarget());
     //rightRight.whileHeld(new Chase(driveTrain, vision));
     intakeExtend.whenPressed(new IntakeExtend(intake, true));
     intakeRetract.whenPressed(new IntakeExtend(intake, false));

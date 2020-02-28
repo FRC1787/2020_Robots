@@ -29,6 +29,7 @@ public class TurnToTarget extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.gyro.navX.reset();
+    RobotContainer.vision.cameraSet(0);
     RobotContainer.vision.ledSet(3);
   }
 
@@ -44,6 +45,7 @@ public class TurnToTarget extends CommandBase {
   public void end(boolean interrupted) {
     DriveTrain.moveRightSide(0);
     DriveTrain.moveLeftSide(0);
+    RobotContainer.vision.cameraSet(1);
     RobotContainer.vision.ledSet(1);
   }
 

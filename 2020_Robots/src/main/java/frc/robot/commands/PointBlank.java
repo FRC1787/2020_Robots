@@ -37,13 +37,13 @@ public class PointBlank extends CommandBase {
     if (autoTimer.get() < 2.6) {
       DriveTrain.tankDrive(-.2,-.2);
     }
-    else if (autoTimer.get() > 2.6 && autoTimer.get() < 6.9) {
+    else if (autoTimer.get() > 2.6 && autoTimer.get() < 7.2) {
       //RobotContainer.shooter.periodic();
       Shooter.shootTimer.start();
       DriveTrain.tankDrive(0,0);
-      Shooter.bootlegShoot(4900, .8);
-      if (autoTimer.get() > 4.6 && autoTimer.get() < 6.9) {
-        Shooter.accelerator.set(.8);
+      Shooter.bootlegShoot(4900, 1);
+      if (autoTimer.get() > 4.6 && autoTimer.get() < 7.2) {
+        Shooter.accelerator.set(-1);
       }
       else {
         Shooter.accelerator.set(0);

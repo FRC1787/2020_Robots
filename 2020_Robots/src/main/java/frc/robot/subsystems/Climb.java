@@ -29,8 +29,8 @@ public class Climb extends SubsystemBase {
   public static boolean liftState = true;
 
 
-  public void liftCheck(){
-    if (RobotContainer.leftStick.getRawButtonPressed(1)){
+  public void liftCheck() {
+    if (RobotContainer.leftStick.getRawButtonPressed(1)) {
       Climb.liftState = !Climb.liftState;
     }
   }
@@ -40,12 +40,12 @@ public class Climb extends SubsystemBase {
     climbTimer.reset();
   }
 
-  public static void climbRun(double setSpeed){
+  public static void climbRun(double setSpeed) {
     climb1.set(setSpeed);
     climb2.set(setSpeed);
   }
 
-  public static void lifterBrake(boolean state){
+  public static void lifterBrake(boolean state) {
     brakeEngaged.set(state);
     brakeDisengaged.set(!state);
   }

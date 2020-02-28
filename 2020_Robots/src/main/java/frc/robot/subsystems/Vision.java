@@ -13,24 +13,67 @@ import frc.robot.Robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.VideoCamera.WhiteBalance;
 
 public class Vision extends SubsystemBase {
   
   public static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
+  private UsbCamera powerCellCam;
+
+  private CvSource outputStream;
+
+  private CvSink powerCellFrameGrabber;
+
+  private static final int STANDARD_IMG_WIDTH = 160;
+  private static final int STANDARD_IMG_HEIGHT = 120;
+
   public static NetworkTableEntry tx; 
   public static NetworkTableEntry ty; 
   public static NetworkTableEntry ta; 
   public static NetworkTableEntry led;
+  public static NetworkTableEntry cameraMode;
 
   public static double lX;
   public static double lY;
   public static double lArea;
   public static double ledState;
+  public static double cameraState;
 
   public Vision() {
+    CameraServer cameraServer = CameraServer.getInstance();
 
+    //Initialize each camera with a channel and name, pushes non-processed images
+    powerCellCam = cameraServer.startAutomaticCapture("Power Cell Camera", 0);
+
+    //Configure resoltuion, FPS, exposure, brightness and white-balance
+    configureCamera(powerCellCam, false);
+
+    //Initialize frame grabber used to grab individual frames from video stream to be processed later
+    powerCellFrameGrabber = cameraServer.getVideo(powerCellCam);
+
+    //Push processed or unprocessed frames
+    outputStream = cameraServer.putVideo("Processed Video", STANDARD_IMG_WIDTH, STANDARD_IMG_HEIGHT);
+  
   }
+
+  public void configureCamera(UsbCamera camera, boolean targetingCamera) {
+    camera.setResolution(STANDARD_IMG_WIDTH, STANDARD_IMG_HEIGHT);
+    camera.setFPS(15);
+    if (targetingCamera) {
+        camera.setExposureManual(5);
+    } else {
+        camera.setExposureAuto();
+    }
+
+    camera.setBrightness(40);
+    camera.setWhiteBalanceManual(WhiteBalance.kFixedIndoor);
+}
+
 
   public static double distanceOutput(double hullArea)
   {
@@ -41,13 +84,17 @@ public class Vision extends SubsystemBase {
     return hullArea;
   }
 
-  public static double distanceToTarget(){
+  public static double distanceToTarget() {
     double distance = (Math.tan(lY)/7.5);
     return distance;
   }
 
-  public static void ledSet(double ledState){
+  public static void ledSet(double ledState) {
     Vision.table.getEntry("ledMode").setNumber(ledState);
+  }
+
+  public static void cameraSet(double cameraState) {
+    Vision.table.getEntry("camMode").setNumber(cameraState);
   }
 
   @Override

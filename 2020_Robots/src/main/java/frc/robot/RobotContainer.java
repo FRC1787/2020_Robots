@@ -10,6 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Joystick; 
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -31,6 +34,8 @@ import frc.robot.commands.IntakeBawls;
 import frc.robot.commands.IntakeExtend;
 import frc.robot.commands.SetHood;
 
+import frc.robot.commands.PointBlank;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -50,15 +55,20 @@ public class RobotContainer {
   public final static Climb climb = new Climb();
   public final static Intake intake = new Intake();
 
+  
+
   /* Commands */
   public final static RobotDrive robotDrive = new RobotDrive(driveTrain);
-  public final static SetHood setHood = new SetHood(shooter);
-  public final static TurnToTarget turnToTarget = new TurnToTarget();
-  //public final static Shoot shoot = new Shoot(shooter);
+  public final static SetHood setHood = new SetHood(shooter, "No");
+  //public final static TurnToTarget turnToTarget = new TurnToTarget();
+  public final static Shoot shoot = new Shoot(shooter, intake);
+
+  private final static PointBlank pointBlank = new PointBlank(driveTrain, shooter);
 
   /* OI */
+
+  //Right Stick
   public static Joystick rightStick = new Joystick(0);
-  public static Joystick leftStick = new Joystick(1);
   public Button rightTrigger = new JoystickButton(rightStick, 1);
   public Button rightThumb = new JoystickButton(rightStick, 2); //back top button
   public Button rightTopLeft = new JoystickButton(rightStick, 3); //top right button
@@ -66,10 +76,15 @@ public class RobotContainer {
   public Button driveTrainOverride = new JoystickButton(rightStick, 5);
   public Button targetButton = new JoystickButton(rightStick, 7);
 
+  //Left Stick
+  public static Joystick leftStick = new Joystick(1);
   public Button leftTrigger = new JoystickButton(leftStick, 1);
-  public Button rightRight = new JoystickButton(rightStick, 4);
-  public Button intakeExtend = new JoystickButton(leftStick, 4);
   public Button intakeRetract = new JoystickButton(leftStick, 3);
+  public Button intakeExtend = new JoystickButton(leftStick, 4);
+  public Button hoodManualButton = new JoystickButton(leftStick, 6);
+  public Button hoodForward = new JoystickButton(leftStick, 7);
+  public Button hoodBack = new JoystickButton(leftStick, 8);
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -89,14 +104,17 @@ public class RobotContainer {
   private void configureButtonBindings() {
     //rightTrigger.whenPressed(new TurnToTarget());
     //rightTopLeft.whenPressed(new Follow(driveTrain, vision));
-    rightThumb.whileHeld(new Shoot(shooter));
+    rightThumb.whileHeld(new Shoot(shooter, intake));
     leftTrigger.whenPressed(new ClimbControl(climb));
     rightTrigger.whileHeld(new IntakeBawls(intake, 1, 1));
     reverseIntake.whileHeld(new IntakeBawls(intake, -1, -1));
-    targetButton.whenPressed(new TurnToTarget());
+    targetButton.whenPressed(new TurnToTarget(driveTrain, vision));
     //rightRight.whileHeld(new Chase(driveTrain, vision));
     intakeExtend.whenPressed(new IntakeExtend(intake, true));
     intakeRetract.whenPressed(new IntakeExtend(intake, false));
+    hoodBack.whenPressed(new SetHood(shooter, "Back"));
+    hoodForward.whenPressed(new SetHood(shooter, "Forward"));
+    hoodManualButton.whileHeld( new SetHood(shooter, "Manual"));
   }
 
 
@@ -106,6 +124,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   
-   //public Command getAutonomousCommand() {
-  //}
+   public Command getAutonomousCommand() {
+     return pointBlank;
+    }
 }

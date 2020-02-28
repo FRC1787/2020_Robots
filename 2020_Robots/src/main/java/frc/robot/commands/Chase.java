@@ -27,24 +27,24 @@ public class Chase extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.gyro.navX.reset();
-    RobotContainer.driveTrain.left1E.setPosition(0); //resets the encoder values to 0
-    RobotContainer.driveTrain.left2E.setPosition(0);
-    RobotContainer.driveTrain.right1E.setPosition(0);
-    RobotContainer.driveTrain.right2E.setPosition(0);
+    DriveTrain.left1E.setPosition(0); //resets the encoder values to 0
+    DriveTrain.left2E.setPosition(0);
+    DriveTrain.right1E.setPosition(0);
+    DriveTrain.right2E.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     RobotContainer.gyro.navX.reset();
-    RobotContainer.driveTrain.seekDrive(10, "limelight", "exact");
+    DriveTrain.seekDrive(10, "limelight", "exact");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.driveTrain.moveRightSide(0);
-    RobotContainer.driveTrain.moveLeftSide(0);
+    DriveTrain.moveRightSide(0);
+    DriveTrain.moveLeftSide(0);
   }
 
   // Returns true when the command should end.

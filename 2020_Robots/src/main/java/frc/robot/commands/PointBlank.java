@@ -8,44 +8,62 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.RobotContainer;
 
-public class SetHood extends CommandBase {
+public class PointBlank extends CommandBase {
 
-  private String setPosition;
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
-  public SetHood(Shooter subsystem, String position) {
+  public static Timer autoTimer = new Timer();
+
+  public PointBlank(DriveTrain drivetrain, Shooter shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
-    this.setPosition = position;
+    addRequirements(drivetrain);
+    addRequirements(shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    autoTimer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (setPosition.equals("Back")) {
-      Shooter.hoodBack();
+    if (autoTimer.get() < 2.6) {
+      DriveTrain.tankDrive(-.2,-.2);
     }
-    else if (setPosition.equals("Forward")) {
-      Shooter.hoodForward();
+    else if (autoTimer.get() > 2.6 && autoTimer.get() < 6.9) {
+      //RobotContainer.shooter.periodic();
+      Shooter.shootTimer.start();
+      DriveTrain.tankDrive(0,0);
+      Shooter.bootlegShoot(4900, .8);
+      if (autoTimer.get() > 4.6 && autoTimer.get() < 6.9) {
+        Shooter.setHood(.8);
+      }
+      else {
+        Shooter.setHood(0);
+      }
     }
-    else if (setPosition.equals("Manual")) {
-      Shooter.setHood(RobotContainer.leftStick.getRawAxis(3));
+    else {
+      DriveTrain.tankDrive(0,0);
+      Shooter.bootlegShoot(0, 0);
+      Shooter.shootTimer.stop();
+      Shooter.shootTimer.reset();
     }
-    //Shooter.hoodControlState();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Shooter.setHood(0);
+    DriveTrain.tankDrive(0,0);
+    Shooter.bootlegShoot(0, 0);
+    autoTimer.stop();
+    autoTimer.reset();
   }
 
   // Returns true when the command should end.

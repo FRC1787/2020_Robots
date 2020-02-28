@@ -23,11 +23,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Intake extends SubsystemBase {
 
-  private CANSparkMax intakeInner = new CANSparkMax(5, MotorType.kBrushless);
-  private CANSparkMax intakeFront = new CANSparkMax(6, MotorType.kBrushless);
+  private static CANSparkMax intakeInner = new CANSparkMax(5, MotorType.kBrushless);
+  private static CANSparkMax intakeFront = new CANSparkMax(6, MotorType.kBrushless);
 
   private static I2C.Port i2cPort = I2C.Port.kOnboard;
-  public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
+  //public static ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
   public static Timer intakeTimer = new Timer();
   public static Timer ballTimer = new Timer();
 
@@ -60,31 +60,31 @@ public class Intake extends SubsystemBase {
     this(0);
   }
 
-  public static void extendIntake(){
+  public static void extendIntake() {
     intakeExtended.set(Intake.extended);
     intakeRetracted.set(!Intake.extended);
   }
 
 
-  public Intake(int ballsLoaded){
+  public Intake(int ballsLoaded) {
     Intake.ballCount = ballsLoaded;
     Intake.ballDelayCounter = Intake.ballDelay;
     Intake.sampleIndex = 0;
     Intake.samples = new int[Intake.SAMPLES];
   }
 
-  public void intakeStage1(double setSpeed){
+  public static void intakeStage1(double setSpeed) {
     intakeInner.set(setSpeed);
     //intakeFront.set(-setSpeed);
   }
 
-  public static boolean getBreakerState(){
+  public static boolean getBreakerState() {
     return (succitvan2.getVoltage() > Intake.breakerVoltageConstant);
   }
 
   public static void ballCheck() {
     //check if the balls are full
-    if (ballCount >= MAX_BALLS){
+    if (ballCount >= MAX_BALLS) {
       ballFull = true;
     } 
     else {
@@ -105,10 +105,10 @@ public class Intake extends SubsystemBase {
 
     //the breaker code
     //The counter to allow a ball to clear the breaker after detection you must configure by hand
-    if (Intake.ballDelayCounter >= Intake.ballDelay){
-      if (Intake.sampleIndex < Intake.SAMPLES && !Intake.ballFull){
+    if (Intake.ballDelayCounter >= Intake.ballDelay) {
+      if (Intake.sampleIndex < Intake.SAMPLES && !Intake.ballFull) {
         //if the breaker is activated
-        if (!getBreakerState()){
+        if (!getBreakerState()) {
           Intake.samples[sampleIndex] = 1;
         }
         else {
@@ -121,11 +121,11 @@ public class Intake extends SubsystemBase {
         //iterate through samples and if the average is high enough then add ball
         int sum = 0;
 
-        for (int i: samples){
+        for (int i: samples) {
           sum += i;
         }
 
-        if (sum > 0){
+        if (sum > 0) {
           Intake.ballCount += 1;
         }
 
@@ -166,7 +166,7 @@ public class Intake extends SubsystemBase {
     ballCheck();
 
     //setters
-    Intake.proximity = colorSensor.getProximity();
+    //Intake.proximity = colorSensor.getProximity();
     Intake.ballReady = (Intake.proximity > 20);
     Intake.ballFull = (Intake.ballCount > 5);
     Intake.intakeTime = intakeTimer.get();

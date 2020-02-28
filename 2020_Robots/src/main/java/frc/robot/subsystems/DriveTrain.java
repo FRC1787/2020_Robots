@@ -90,11 +90,11 @@ public class DriveTrain extends SubsystemBase {
     return (right1E.getPosition() + right2E.getPosition() + right3E.getPosition()) / 2.0;
   }
 
-  public static double rightDistance(){
+  public static double rightDistance() {
     return ((rightEncoder() / 8.05) * 4 * Math.PI);
   }
 
-  public static double leftDistance(){
+  public static double leftDistance() {
     return -((leftEncoder() / 8.05) * 4 * Math.PI);
   }
 
@@ -117,7 +117,7 @@ public class DriveTrain extends SubsystemBase {
   // drives both sides of the robot based on values from a feedback sensor and a
   // target position
   public static void seekDrive(double destination, String feedBackSensor, String seekType) {
-    if (feedBackSensor.equals("navX") && !seekType.equals("follow")){
+    if (feedBackSensor.equals("navX") && !seekType.equals("follow")) {
       tankDrive(pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType),
           pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType));
     }

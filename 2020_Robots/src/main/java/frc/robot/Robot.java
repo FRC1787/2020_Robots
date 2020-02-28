@@ -25,6 +25,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climb;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -40,6 +41,10 @@ public class Robot extends TimedRobot {
 
   private Compressor compressor = new Compressor();
   private RobotContainer robotContainer;
+
+  public Command autoCommand;
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -86,12 +91,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    /*m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    Intake.extendIntake();
+
+    this.autoCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    } */
+    if (this.autoCommand != null) {
+      autoCommand.schedule();
+      
+    }
   }
 
   /**
@@ -111,11 +119,12 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     } */
     Shooter.shootTimer.reset();
-    Shooter.shootTimer2.reset();
+    Shooter.intakeShootTimer.reset();
     Climb.lifterBrake(true);
     Intake.extendIntake();
-    Shooter.hoodControl = false;
+    //Shooter.hoodControl = false;
     Vision.ledSet(1);
+    Vision.cameraSet(1);
     //Shooter.hoodE.
   }
 
@@ -139,7 +148,7 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
   }
 
-  public void setDashboard(){ //sends values to SmartDashboard to be read externally
+  public void setDashboard() { //sends values to SmartDashboard to be read externally
     SmartDashboard.putNumber("Right Encoder", DriveTrain.rightEncoder());
     SmartDashboard.putNumber("left Encoder", DriveTrain.leftEncoder());
     SmartDashboard.putNumber("Right Output", DriveTrain.averageRightsideOutput());
@@ -156,5 +165,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Shoot1 RPM", Shooter.shootE1.getVelocity());
     SmartDashboard.putNumber("Shoot2 RPM", Shooter.shootE2.getVelocity());
     SmartDashboard.putNumber("Hood Position", Shooter.hoodE.getPosition());
+    SmartDashboard.putNumber("Shoot Ramp Time", Shooter.shootTimer.get());
+    SmartDashboard.putNumber("Accelerator RPM", Shooter.acceleratorE.getVelocity());
   }
 }

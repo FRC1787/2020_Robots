@@ -20,31 +20,31 @@ public class TurnToTarget extends CommandBase {
   /**
    * Creates a new TurnToTarget.
    */
-  public TurnToTarget() {
-    addRequirements(RobotContainer.driveTrain);
-    addRequirements(RobotContainer.vision);
+  public TurnToTarget(DriveTrain drivetrain, Vision vision) {
+    addRequirements(drivetrain);
+    addRequirements(vision);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     RobotContainer.gyro.navX.reset();
-    RobotContainer.vision.led.setNumber(3);
+    RobotContainer.vision.ledSet(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.gyro.navX.reset();
-    RobotContainer.driveTrain.seekDrive(Vision.lX, "navX", "exact");
+    Gyro.navX.reset();
+    DriveTrain.seekDrive(Vision.lX, "navX", "exact");
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.driveTrain.moveRightSide(0);
-    RobotContainer.driveTrain.moveLeftSide(0);
-    RobotContainer.vision.led.setNumber(1);
+    DriveTrain.moveRightSide(0);
+    DriveTrain.moveLeftSide(0);
+    RobotContainer.vision.ledSet(1);
   }
 
   // Returns true when the command should end.

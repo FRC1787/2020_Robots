@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
 
   public static CANSparkMax shooter1 = new CANSparkMax(3, MotorType.kBrushless);
   public static CANSparkMax shooter2 = new CANSparkMax(12, MotorType.kBrushless);
-  private static CANSparkMax accelerator = new CANSparkMax(10, MotorType.kBrushless);
+  public static CANSparkMax accelerator = new CANSparkMax(10, MotorType.kBrushless);
   private static CANSparkMax hood = new CANSparkMax(11, MotorType.kBrushed);
 
   public static CANEncoder shootE1 = new CANEncoder(shooter1);

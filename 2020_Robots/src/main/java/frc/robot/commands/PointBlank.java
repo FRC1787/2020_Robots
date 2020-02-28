@@ -43,10 +43,10 @@ public class PointBlank extends CommandBase {
       DriveTrain.tankDrive(0,0);
       Shooter.bootlegShoot(4900, .8);
       if (autoTimer.get() > 4.6 && autoTimer.get() < 6.9) {
-        Shooter.setHood(.8);
+        Shooter.accelerator.set(.8);
       }
       else {
-        Shooter.setHood(0);
+        Shooter.accelerator.set(0);
       }
     }
     else {

@@ -49,11 +49,15 @@ public class PointBlank extends CommandBase {
         Shooter.accelerator.set(0);
       }
     }
-    else {
-      DriveTrain.tankDrive(0,0);
+    else if (autoTimer.get() > 7.2 && autoTimer.get() < 9.8) {
+      DriveTrain.tankDrive(.2, .2);
       Shooter.bootlegShoot(0, 0);
       Shooter.shootTimer.stop();
       Shooter.shootTimer.reset();
+      RobotContainer.gyro.navX.reset();
+    }
+    else if (autoTimer.get() > 9.8) {
+      RobotContainer.driveTrain.seekDrive(180, "navX", "exact");
     }
   }
 
@@ -69,6 +73,6 @@ public class PointBlank extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return autoTimer.get() >= 15;
   }
 }

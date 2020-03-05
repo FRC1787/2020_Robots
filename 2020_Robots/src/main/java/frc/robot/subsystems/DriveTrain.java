@@ -119,7 +119,7 @@ public class DriveTrain extends SubsystemBase {
   public static void seekDrive(double destination, String feedBackSensor, String seekType) {
     if (feedBackSensor.equals("navX") && !seekType.equals("follow")) {
       tankDrive(pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType),
-          pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType));
+          -pIDDrive(destination, Gyro.navXRotAngle(), feedBackSensor, seekType));
     }
 
     else if (feedBackSensor.equals("encoder")) { 
@@ -148,7 +148,7 @@ public class DriveTrain extends SubsystemBase {
       final String seekType) // enter target distance in feet
   {
     if (feedBackSensor.equals("navX")) {
-      proportionalTweak = 0.0067; // 0.0065 0.0047
+      proportionalTweak = 0.0037; // 0.0065 0.0047
       integralTweak = 0.0000; // .000007
       DerivativeTweak = -0.0;
       okErrorRange = 0.0;
@@ -218,11 +218,11 @@ public class DriveTrain extends SubsystemBase {
 
     if (feedBackSensor.equals("navX"))// sets max motor % to 40 if using navx to drive
     {
-      if (motorOutput > 1)
-        return 1;
+      if (motorOutput > .2)
+        return .2;
 
-      else if (motorOutput < -1)
-        return -1;
+      else if (motorOutput < -.2)
+        return -.2;
 
       else
         return motorOutput;

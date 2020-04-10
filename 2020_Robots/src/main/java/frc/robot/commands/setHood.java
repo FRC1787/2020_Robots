@@ -25,6 +25,7 @@ public class SetHood extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Shooter.hoodCalibrate();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +40,9 @@ public class SetHood extends CommandBase {
     else if (setPosition.equals("Manual")) {
       Shooter.setHood(RobotContainer.leftStick.getRawAxis(3));
     }
-    //Shooter.hoodControlState();
+    else if (setPosition.equals("Auto")) {
+      Shooter.hoodAutoSet();
+    }
   }
 
   // Called once the command ends or is interrupted.

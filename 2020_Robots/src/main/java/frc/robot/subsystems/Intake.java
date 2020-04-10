@@ -65,6 +65,13 @@ public class Intake extends SubsystemBase {
     intakeRetracted.set(!Intake.extended);
   }
 
+  public void extendCheck() {
+    if (RobotContainer.rightStick.getRawButtonPressed(3)) {
+      Intake.extended = !Intake.extended;
+    }
+  }
+  
+
 
   public Intake(int ballsLoaded) {
     Intake.ballCount = ballsLoaded;
@@ -164,6 +171,7 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     //functions
     ballCheck();
+    extendCheck();
 
     //setters
     //Intake.proximity = colorSensor.getProximity();

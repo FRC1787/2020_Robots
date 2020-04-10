@@ -35,9 +35,9 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() {
     //RobotContainer.shooter.shoot(1); // COURT THIS SETS THE SPEED
-    Shooter.bootlegShoot(5100, .8);
+    Shooter.bootlegShoot(4900, .8);
 
-    if (Shooter.intakeTime > 2.2 && Shooter.intakeTime < 2.4) {
+    if (Shooter.intakeTime > 1.4 && Shooter.intakeTime < 1.6) {
       Intake.intakeStage1(1);
     }
     else {

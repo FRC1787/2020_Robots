@@ -48,7 +48,7 @@ public class Vision extends SubsystemBase {
     CameraServer cameraServer = CameraServer.getInstance();
 
     //Initialize each camera with a channel and name, pushes non-processed images
-    powerCellCam = cameraServer.startAutomaticCapture("Power Cell Camera", 0);
+    powerCellCam = cameraServer.startAutomaticCapture("Ceiling Cam", 0);
 
     //Configure resoltuion, FPS, exposure, brightness and white-balance
     configureCamera(powerCellCam, false);
@@ -85,7 +85,7 @@ public class Vision extends SubsystemBase {
   }
 
   public static double distanceToTarget() {
-    double distance = (Math.tan(lY)/7.5);
+    double distance = ((7.4375*12 - 21.5)/(Math.tan(Math.toRadians(Vision.lY + 18))) - 24.5);
     return distance;
   }
 

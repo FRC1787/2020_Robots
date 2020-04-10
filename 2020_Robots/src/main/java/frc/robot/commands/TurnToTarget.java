@@ -29,8 +29,8 @@ public class TurnToTarget extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.gyro.navX.reset();
-    RobotContainer.vision.cameraSet(0);
-    RobotContainer.vision.ledSet(3);
+    Vision.cameraSet(0);
+    Vision.ledSet(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,8 +45,8 @@ public class TurnToTarget extends CommandBase {
   public void end(boolean interrupted) {
     DriveTrain.moveRightSide(0);
     DriveTrain.moveLeftSide(0);
-    RobotContainer.vision.cameraSet(1);
-    RobotContainer.vision.ledSet(1);
+    Vision.cameraSet(1);
+    Vision.ledSet(1);
   }
 
   // Returns true when the command should end.

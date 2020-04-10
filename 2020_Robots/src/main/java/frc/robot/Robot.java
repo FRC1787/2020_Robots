@@ -80,6 +80,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Vision.ledSet(0);
+    Vision.cameraSet(0);
   }
 
   @Override
@@ -167,5 +168,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Hood Position", Shooter.hoodE.getPosition());
     SmartDashboard.putNumber("Shoot Ramp Time", Shooter.shootTimer.get());
     SmartDashboard.putNumber("Accelerator RPM", Shooter.acceleratorE.getVelocity());
+    SmartDashboard.putNumber("Distance to Target", Vision.distanceToTarget()/12);
+    SmartDashboard.putNumber("Hood Set Position", Shooter.hoodSetPos);
+    SmartDashboard.putNumber("Hood Amperage", Shooter.hood.getOutputCurrent());
   }
 }

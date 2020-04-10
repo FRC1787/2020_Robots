@@ -60,7 +60,7 @@ public class RobotContainer {
 
   /* Commands */
   public final static RobotDrive robotDrive = new RobotDrive(driveTrain);
-  public final static SetHood setHood = new SetHood(shooter, "No");
+  public final static SetHood setHood = new SetHood(shooter, "Auto");
   //public final static TurnToTarget turnToTarget = new TurnToTarget();
   public final static Shoot shoot = new Shoot(shooter, intake);
 
@@ -72,7 +72,7 @@ public class RobotContainer {
   public static Joystick rightStick = new Joystick(0);
   public Button rightTrigger = new JoystickButton(rightStick, 1);
   public Button rightThumb = new JoystickButton(rightStick, 2); //back top button
-  public Button rightTopLeft = new JoystickButton(rightStick, 3); //top right button
+  public Button intakeToggle = new JoystickButton(rightStick, 3); //left thumb button
   public Button reverseIntake = new JoystickButton(rightStick, 4);
   public Button driveTrainOverride = new JoystickButton(rightStick, 5);
   public Button targetButton = new JoystickButton(rightStick, 7);
@@ -80,8 +80,8 @@ public class RobotContainer {
   //Left Stick
   public static Joystick leftStick = new Joystick(1);
   public Button leftTrigger = new JoystickButton(leftStick, 1);
-  public Button intakeRetract = new JoystickButton(leftStick, 3);
-  public Button intakeExtend = new JoystickButton(leftStick, 4);
+  //public Button intakeRetract = new JoystickButton(leftStick, 3);
+  //public Button intakeExtend = new JoystickButton(leftStick, 4);
   public Button hoodManualButton = new JoystickButton(leftStick, 6);
   public Button hoodForward = new JoystickButton(leftStick, 7);
   public Button hoodBack = new JoystickButton(leftStick, 8);
@@ -109,14 +109,13 @@ public class RobotContainer {
     leftTrigger.whenPressed(new ClimbControl(climb));
     rightTrigger.whileHeld(new IntakeBawls(intake, 1, 1));
     reverseIntake.whileHeld(new IntakeBawls(intake, -1, -1));
-   // targetButton.whenPressed(new TurnToTarget(driveTrain, vision));
+    targetButton.whenPressed(new TurnToTarget(driveTrain, vision));
     //rightRight.whileHeld(new Chase(driveTrain, vision));
-    intakeExtend.whenPressed(new IntakeExtend(intake, true));
-    intakeRetract.whenPressed(new IntakeExtend(intake, false));
+    intakeToggle.whenPressed(new IntakeExtend(intake));
     hoodBack.whenPressed(new SetHood(shooter, "Back"));
     hoodForward.whenPressed(new SetHood(shooter, "Forward"));
     hoodManualButton.whileHeld( new SetHood(shooter, "Manual"));
-    targetButton.whenPressed(new OneEighty(driveTrain, gyro));
+    //targetButton.whenPressed(new OneEighty(driveTrain, gyro));
   }
 
 

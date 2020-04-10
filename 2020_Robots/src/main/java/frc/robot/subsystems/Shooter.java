@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
   public static CANSparkMax shooter1 = new CANSparkMax(3, MotorType.kBrushless);
   public static CANSparkMax shooter2 = new CANSparkMax(12, MotorType.kBrushless);
   public static CANSparkMax accelerator = new CANSparkMax(10, MotorType.kBrushless);
-  private static CANSparkMax hood = new CANSparkMax(11, MotorType.kBrushed);
+  public static CANSparkMax hood = new CANSparkMax(11, MotorType.kBrushed);
 
   public static CANEncoder shootE1 = new CANEncoder(shooter1);
   public static CANEncoder shootE2 = new CANEncoder(shooter2);
@@ -36,6 +36,8 @@ public class Shooter extends SubsystemBase {
   public static Timer shootTimer = new Timer();
   public static Timer intakeShootTimer = new Timer();
 
+  public static double hoodSetPos;
+  public static double hoodZeroPos;
   public static double rampTime;
   public static double intakeTime;
   public static boolean rampOK = false;
@@ -47,9 +49,8 @@ public class Shooter extends SubsystemBase {
     intakeShootTimer.stop();
     shootTimer.reset();
     intakeShootTimer.reset();
+    hood.setInverted(false);
   }
-
-
 
   // SHOOTER //
 
@@ -92,6 +93,28 @@ public class Shooter extends SubsystemBase {
 
   // HOOD //
 
+  public static void hoodCalibrate() {
+    hood.set(-1);
+    if (hood.getOutputCurrent() > 10) {
+      Shooter.hoodZeroPos = hoodE.getPosition();
+      hood.set(0);
+    }
+  }
+
+  public static void hoodCalcPos(double distanceFromTarget) {
+    Shooter.hoodSetPos = 0.000002219*distanceFromTarget*distanceFromTarget -0.001297*distanceFromTarget -0.2556;
+  }
+
+  public static void hoodAutoSet() {
+    double deltaPos = (Shooter.hoodSetPos - hoodE.getPosition()) * 20;
+    if (hoodSetPos <= 0) {
+      hood.set(deltaPos);
+    }
+    else {
+      hood.set(0);
+    }
+  }
+
   public static void setHood(double setSpeed) {
     hood.set(setSpeed);
 
@@ -126,6 +149,8 @@ public class Shooter extends SubsystemBase {
     //System.out.println(String.format("S1: %s, S2: %s",shooter1.getInverted(), shooter2.getInverted()));
     Shooter.rampTime = shootTimer.get();
     Shooter.intakeTime = intakeShootTimer.get();
-    Shooter.rampOK = (Shooter.rampTime > 2); //|| (Shooter.shootTime > .5); //COURT THIS IS THE RAMP TIME
+    Shooter.rampOK = (Shooter.rampTime > 1); //|| (Shooter.shootTime > .5); //COURT THIS IS THE RAMP TIME
+
+    hoodCalcPos(Vision.distanceToTarget());
   }
 }

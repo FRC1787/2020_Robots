@@ -14,9 +14,9 @@ import frc.robot.subsystems.Climb;
 
 
 public class ClimbControl extends CommandBase {
-  /**
-   * Creates a new climbControl.
-   */
+  
+
+
   public ClimbControl(Climb subsystem) {
     addRequirements(subsystem);
   }
@@ -31,8 +31,16 @@ public class ClimbControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!Climb.liftState){
-      RobotContainer.climb.climbRun(RobotContainer.leftStick.getY());
+    if (!Climb.liftState && !(RobotContainer.leftStick.getRawButton(3) || RobotContainer.leftStick.getRawButton(4))) {
+      RobotContainer.climb.climbRun(-RobotContainer.leftStick.getY());
+    }
+    else if (!Climb.liftState && RobotContainer.leftStick.getRawButton(3)) {
+      RobotContainer.climb.climbLeft(-RobotContainer.leftStick.getY());
+      RobotContainer.climb.climbRight(0);
+    }
+    else if (!Climb.liftState && RobotContainer.leftStick.getRawButton(4)) {
+      RobotContainer.climb.climbRight(-RobotContainer.leftStick.getY());
+      RobotContainer.climb.climbLeft(0);
     }
     else {
       Climb.climbRun(0);
@@ -47,10 +55,10 @@ public class ClimbControl extends CommandBase {
     Climb.climbTimer.stop();
     Climb.climbTimer.reset();
     
-    /*if (interrupted){
+    /*if (interrupted) {
       Climb.lifterBrake(false);
     }
-    else if (!interrupted){
+    else if (!interrupted) {
       Climb.lifterBrake(true);
     }*/
   }
@@ -58,7 +66,6 @@ public class ClimbControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-    //return !RobotContainer.leftStick.getRawButton(1);
+    return Climb.liftState;
   }
 }

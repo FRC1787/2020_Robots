@@ -34,6 +34,7 @@ public class Climb extends SubsystemBase {
       Climb.liftState = !Climb.liftState;
     }
   }
+  
   public Climb() {
     climb2.setInverted(true);
     //lifterBrake(true);
@@ -42,6 +43,14 @@ public class Climb extends SubsystemBase {
 
   public static void climbRun(double setSpeed) {
     climb1.set(setSpeed);
+    climb2.set(setSpeed);
+  }
+
+  public static void climbLeft(double setSpeed) {
+    climb1.set(setSpeed);
+  }
+
+  public static void climbRight(double setSpeed) {
     climb2.set(setSpeed);
   }
 

@@ -15,16 +15,16 @@ public class IntakeExtend extends CommandBase {
   
   public boolean extendSet;
 
-  public IntakeExtend(Intake subsystem, boolean state) {
+  public IntakeExtend(Intake subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
-    this.extendSet = state;
+    //this.extendSet = state;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Intake.extended = extendSet;
+    //Intake.extended = extendSet;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +41,6 @@ public class IntakeExtend extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
